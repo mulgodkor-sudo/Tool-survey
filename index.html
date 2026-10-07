@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tool Survey - Engineering Hub</title>
+<style>
+:root{
+  --bg:#f4f6f9; --card:#fff; --line:#dfe4ec; --line2:#eef1f6;
+  --ink:#1d2430; --ink2:#5b6676; --ink3:#8a95a6;
+  --accent:#2563a8; --accent-soft:#e8f0fa;
+  --ok:#1f7a4d; --ok-soft:#e6f4ec; --warn:#a8631f; --warn-soft:#fdf2e3;
+  --bad:#b03a3a; --bad-soft:#fbeaea;
+  --radius:10px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);
+  font-family:"Malgun Gothic","맑은 고딕",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:14px;line-height:1.6}
+a{color:var(--accent)}
+header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
+.hwrap{max-width:1040px;margin:0 auto;padding:11px 18px;display:flex;align-items:center;gap:12px}
+.logo{font-weight:700;font-size:16px;letter-spacing:-.3px}
+.logo small{font-weight:400;color:var(--ink3);font-size:12px;margin-left:6px}
+.hwrap .sp{flex:1}
+.who{color:var(--ink2);font-size:13px}
+.badge{display:inline-block;padding:1px 7px;border-radius:20px;font-size:11px;
+  background:var(--accent-soft);color:var(--accent);margin-left:5px;vertical-align:1px}
+main{max-width:1040px;margin:0 auto;padding:20px 18px 70px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:18px 20px;margin-bottom:14px}
+h1{font-size:20px;margin:0 0 6px}
+h2{font-size:16px;margin:0 0 10px;padding-bottom:8px;border-bottom:1px solid var(--line2)}
+h3{font-size:14px;margin:18px 0 8px}
+p.lead{color:var(--ink2);white-space:pre-wrap;margin:0 0 4px}
+.muted{color:var(--ink3);font-size:12.5px}
+button{font-family:inherit;font-size:13px;border:1px solid var(--line);background:#fff;
+  color:var(--ink);padding:7px 14px;border-radius:7px;cursor:pointer}
+button:hover{border-color:#c3ccda;background:#fafbfd}
+button.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+button.primary:hover{background:#1e5490}
+button.ghost{border-color:transparent;background:transparent;color:var(--ink2);padding:5px 8px}
+button.danger{color:var(--bad);border-color:#e9cfcf}
+button:disabled{opacity:.5;cursor:default}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.right{margin-left:auto}
+input[type=text],textarea,select{font-family:inherit;font-size:13.5px;width:100%;
+  border:1px solid var(--line);border-radius:7px;padding:8px 10px;background:#fff;color:var(--ink)}
+textarea{min-height:76px;resize:vertical;line-height:1.55}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--accent-soft);border-color:var(--accent)}
+label{cursor:pointer}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--line2);vertical-align:middle}
+th{color:var(--ink2);font-weight:600;background:#fafbfd;white-space:nowrap}
+tbody tr:hover{background:#fcfdff}
+.pill{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11.5px;font-weight:600}
+.pill.draft{background:#eef1f6;color:var(--ink2)}
+.pill.open{background:var(--ok-soft);color:var(--ok)}
+.pill.closed{background:var(--warn-soft);color:var(--warn)}
+.pill.none{background:#f0f2f6;color:var(--ink3)}
+.pill.sub{background:var(--ok-soft);color:var(--ok)}
+.pill.part{background:var(--warn-soft);color:var(--warn)}
+
+/* ---- 설문 응답 ---- */
+.qblock{border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;
+  margin-bottom:12px;background:#fff}
+.qblock.tool{border-left:3px solid var(--accent)}
+.qblock.miss{border-color:var(--bad);background:var(--bad-soft)}
+tr.miss{background:var(--bad-soft)}
+.qtitle{font-weight:600;margin-bottom:2px}
+.qtitle .req{color:var(--bad);margin-left:3px}
+.qhelp{color:var(--ink3);font-size:12.5px;margin-bottom:8px}
+.opts{display:flex;flex-direction:column;gap:5px;margin-top:7px}
+.opts.inline{flex-direction:row;flex-wrap:wrap;gap:6px}
+.opt{display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:7px;
+  padding:7px 11px;background:#fff}
+.opt:hover{background:#fafbfd}
+.opt input{margin:0;accent-color:var(--accent)}
+.opt.on{border-color:var(--accent);background:var(--accent-soft)}
+.awtable th:first-child,.awtable td:first-child{width:38%}
+.awtable td.ch{text-align:center;white-space:nowrap}
+.awtable .tname{font-weight:600}
+.awtable .tdesc{color:var(--ink3);font-size:12px;font-weight:400}
+.toolhead{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.toolhead .n{font-weight:700;font-size:14.5px}
+.unused-note{background:#fafbfd;border:1px dashed var(--line);border-radius:7px;
+  padding:8px 11px;color:var(--ink2);font-size:12.5px;margin-bottom:10px}
+.bar{position:relative;background:#eef1f6;border-radius:4px;height:16px;min-width:80px}
+.bar>i{position:absolute;left:0;top:0;bottom:0;background:var(--accent);
+  border-radius:4px;opacity:.75}
+.cnt{white-space:nowrap;font-variant-numeric:tabular-nums}
+.sticky-foot{position:fixed;left:0;right:0;bottom:0;background:#fff;
+  border-top:1px solid var(--line);z-index:25}
+.sticky-foot .in{max-width:1040px;margin:0 auto;padding:10px 18px;display:flex;
+  align-items:center;gap:10px}
+.prog{flex:1;min-width:120px}
+.prog .t{font-size:12px;color:var(--ink2);margin-bottom:3px}
+.prog .g{height:6px;background:#eef1f6;border-radius:4px;overflow:hidden}
+.prog .g>i{display:block;height:100%;background:var(--ok)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:72px;background:#1d2430;
+  color:#fff;padding:9px 16px;border-radius:8px;font-size:13px;z-index:60;opacity:0;
+  transition:opacity .18s;pointer-events:none}
+.toast.on{opacity:.95}
+.note{background:var(--warn-soft);border:1px solid #f0dcbd;color:#7a4a14;
+  border-radius:8px;padding:9px 12px;font-size:13px;margin-bottom:12px}
+.note.ok{background:var(--ok-soft);border-color:#cfe7d9;color:#1a5f3d}
+.note.err{background:var(--bad-soft);border-color:#eccfcf;color:#8e2f2f}
+.texts li{margin-bottom:9px;padding-left:2px}
+.texts .who{color:var(--accent);font-weight:600;font-size:12.5px}
+.texts .tx{white-space:pre-wrap}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.kpi{display:flex;gap:10px;flex-wrap:wrap}
+.kpi .k{flex:1;min-width:120px;border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.kpi .k b{display:block;font-size:22px;line-height:1.2}
+.kpi .k span{color:var(--ink3);font-size:12px}
+.tabs{display:flex;gap:4px;margin-bottom:12px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.tabs button{border:none;border-bottom:2px solid transparent;border-radius:0;
+  background:none;padding:8px 13px;color:var(--ink2)}
+.tabs button.on{color:var(--accent);border-bottom-color:var(--accent);font-weight:700}
+.editq{border:1px solid var(--line);border-radius:8px;padding:11px 13px;margin-bottom:9px;
+  background:#fdfdfe}
+.editq .hd{display:flex;gap:8px;align-items:center;margin-bottom:7px}
+.editq .hd select{width:auto}
+.f{margin-bottom:8px}
+.f label{display:block;font-size:12px;color:var(--ink2);margin-bottom:3px}
+hr{border:none;border-top:1px solid var(--line2);margin:16px 0}
+@media (max-width:760px){
+  .grid2{grid-template-columns:1fr}
+  .awtable th:first-child,.awtable td:first-child{width:auto}
+  .awtable{font-size:12px}
+  th,td{padding:6px 5px}
+}
+</style>
+</head>
+<body>
+<header><div class="hwrap">
+  <div class="logo">Tool Survey <small>Engineering Hub</small></div>
+  <div class="sp"></div>
+  <div class="who" id="who"></div>
+  <button class="ghost" onclick="go('#/')">목록</button>
+</div></header>
+<main id="app"><div class="card">불러오는 중…</div></main>
+<div class="toast" id="toast"></div>
+
+<script>
+'use strict';
+var ME = {username:'', display:'', admin:false};
+var AW = [];          // 인지도 보기 (서버에서 받음)
+var state = {};
+
+/* ------------------------------------------------------------------ 공통 */
+function h(s){ return String(s==null?'':s).replace(/[&<>"']/g,
+  function(c){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]); }); }
+function el(id){ return document.getElementById(id); }
+function toast(m){ var t=el('toast'); t.textContent=m; t.classList.add('on');
+  clearTimeout(toast._t); toast._t=setTimeout(function(){t.classList.remove('on');},2200); }
+function go(hash){ if(location.hash===hash){ render(); } else { location.hash=hash; } }
+function fmt(ts){ if(!ts) return '-'; var d=new Date(ts*1000);
+  function p(n){ return (n<10?'0':'')+n; }
+  return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes()); }
+function pct(n,d){ return d>0 ? Math.round(n*100/d) : 0; }
+/* 응답률: Hub 계정보다 응답이 많아지는 상황(계정 정리 전 등)에서도 100%를 넘기지 않는다 */
+function rate(n,d){ return Math.min(100, pct(n,d)); }
+
+function api(path, opt){
+  opt = opt || {};
+  return fetch(path, {method:opt.method||'GET',
+      headers:{'Content-Type':'application/json'},
+      body:opt.body?JSON.stringify(opt.body):undefined})
+    .then(function(r){
+      return r.json().catch(function(){ return {error:'응답을 해석할 수 없습니다.'}; })
+        .then(function(j){
+          if(!r.ok){ var e=new Error(j.error||('HTTP '+r.status)); e.data=j; throw e; }
+          return j; });
+    });
+}
+
+/* ------------------------------------------------------------------ 라우팅 */
+window.addEventListener('hashchange', render);
+api('/api/me').then(function(me){
+  ME=me;
+  el('who').innerHTML = h(me.display)+(me.admin?'<span class="badge">관리자</span>':'');
+  render();
+}).catch(function(){
+  el('app').innerHTML = '<div class="card"><h2>로그인이 필요합니다</h2>'+
+    '<p class="lead">Engineering Hub 포털에서 <b>Tool Survey</b> 카드를 눌러 들어오세요.\n'+
+    '포털 주소: <a href="/">http://&lt;서버IP&gt;:8080</a></p></div>';
+});
+
+function render(){
+  var hash = location.hash || '#/';
+  var m;
+  if((m=hash.match(/^#\/survey\/(\d+)$/))) return viewFill(+m[1]);
+  if((m=hash.match(/^#\/results\/(\d+)$/))) return viewResults(+m[1]);
+  if((m=hash.match(/^#\/edit\/(\d+)$/)))    return viewEdit(+m[1]);
+  if((m=hash.match(/^#\/one\/(\d+)\/(.+)$/))) return viewOne(+m[1], decodeURIComponent(m[2]));
+  return viewList();
+}
+
+/* ================================================================= 목록 */
+function viewList(){
+  api('/api/surveys').then(function(d){
+    var rows = d.surveys.map(function(s){
+      var my = {none:'<span class="pill none">미응답</span>',
+                draft:'<span class="pill part">작성중</span>',
+                submitted:'<span class="pill sub">제출완료</span>'}[s.myState];
+      var st = {draft:'<span class="pill draft">작성중(비공개)</span>',
+                open:'<span class="pill open">진행중</span>',
+                closed:'<span class="pill closed">종료</span>'}[s.status];
+      var btns = '';
+      if(s.status==='open') btns += '<button class="primary" onclick="go(\'#/survey/'+s.id+'\')">'+
+          (s.myState==='submitted'?'내 응답 수정':'응답하기')+'</button> ';
+      if(s.status!=='open' && s.myState!=='none')
+        btns += '<button onclick="go(\'#/survey/'+s.id+'\')">내 응답 보기</button> ';
+      if(ME.admin || s.showResults)
+        btns += '<button onclick="go(\'#/results/'+s.id+'\')">결과 보기</button> ';
+      if(ME.admin) btns += '<button onclick="go(\'#/edit/'+s.id+'\')">설문 편집</button>';
+      return '<tr><td><b>'+h(s.title)+'</b><div class="muted">'+st+
+        (s.anonymous?' · 익명':'')+'</div></td>'+
+        '<td class="cnt">'+s.responses+' / '+d.hubUsers+'<div class="muted">'+
+        rate(s.responses,d.hubUsers)+'%</div></td>'+
+        '<td>'+my+'</td><td class="right">'+btns+'</td></tr>';
+    }).join('');
+    el('app').innerHTML =
+      '<div class="card"><div class="row"><h1 style="margin:0">설문 목록</h1>'+
+      (ME.admin?'<button class="primary right" onclick="newSurvey()">+ 새 설문 만들기</button>':'')+
+      '</div></div>'+
+      '<div class="card">'+(rows?
+        '<table><thead><tr><th>설문</th><th>응답</th><th>내 상태</th><th></th></tr></thead>'+
+        '<tbody>'+rows+'</tbody></table>'
+        :'<p class="lead">진행 중인 설문이 없습니다.</p>')+'</div>';
+  }).catch(err);
+}
+function err(e){ el('app').innerHTML='<div class="card"><div class="note err">'+h(e.message)+
+  '</div><button onclick="go(\'#/\')">목록으로</button></div>'; }
+
+function newSurvey(){
+  var t = prompt('설문 제목을 입력하세요', '팀 공용 툴 사용 현황 및 개선 의견 조사');
+  if(!t) return;
+  api('/api/surveys',{method:'POST',body:{title:t}}).then(function(r){
+    go('#/edit/'+r.id); }).catch(function(e){ toast(e.message); });
+}
+
+/* ============================================================== 응답 화면 */
+function viewFill(sid){
+  api('/api/surveys/'+sid).then(function(d){
+    AW = d.awarenessOptions;
+    state = {sid:sid, s:d.survey, a:(d.myResponse&&d.myResponse.answers)||
+             {awareness:{},tools:{},common:{}}, submitted:!!(d.myResponse&&d.myResponse.submitted),
+             readonly:d.survey.status!=='open', missing:{}};
+    state.a.awareness = state.a.awareness||{};
+    state.a.tools = state.a.tools||{};
+    state.a.common = state.a.common||{};
+    drawFill();
+  }).catch(err);
+}
+
+function usedVal(v){ for(var i=0;i<AW.length;i++) if(AW[i].value===v) return AW[i].used; return false; }
+
+function drawFill(){
+  var s=state.s, sc=s.schema, a=state.a, ro=state.readonly;
+  var html = '<div class="card"><h1>'+h(s.title)+'</h1><p class="lead">'+h(s.intro)+'</p>'+
+    '<div class="muted">응답자: <b>'+h(ME.display)+'</b>'+
+    (s.anonymous?' · 결과는 <b>익명</b>으로 집계됩니다.':' · 결과에 이름이 함께 표시됩니다.')+
+    '</div></div>';
+
+  if(ro) html += '<div class="card"><div class="note">이 설문은 '+
+    (s.status==='closed'?'종료되었습니다':'아직 공개되지 않았습니다')+
+    '. 내용만 확인할 수 있고 수정은 되지 않습니다.</div></div>';
+  else if(state.submitted) html += '<div class="card"><div class="note ok">이미 제출하셨습니다. '+
+    '내용을 고치고 다시 제출하면 덮어씁니다.</div></div>';
+
+  /* --- Q1 인지도 --- */
+  html += '<div class="card"><h2>1. '+h(sc.awarenessLabel||'어떤 툴에 대해 알고 계신가요?')+'</h2>'+
+    '<div class="qhelp">'+h(sc.awarenessHelp||'')+'</div>'+
+    '<table class="awtable"><thead><tr><th>툴</th>'+
+    AW.map(function(o){ return '<th class="ch">'+h(o.label)+'</th>'; }).join('')+
+    '</tr></thead><tbody>';
+  (sc.tools||[]).forEach(function(t){
+    var bad = state.missing['awareness:'+t.id];
+    html += '<tr'+(bad?' class="miss"':'')+'><td>'+
+      '<div class="tname">'+h(t.name)+'</div>'+
+      (t.desc?'<div class="tdesc">'+h(t.desc)+'</div>':'')+'</td>'+
+      AW.map(function(o){
+        return '<td class="ch"><input type="radio" name="aw_'+h(t.id)+'" value="'+h(o.value)+'"'+
+          (a.awareness[t.id]===o.value?' checked':'')+(ro?' disabled':'')+
+          ' onchange="setAw(\''+h(t.id)+'\',\''+h(o.value)+'\')"></td>';
+      }).join('')+'</tr>';
+  });
+  html += '</tbody></table></div>';
+
+  /* --- Q2 툴별 --- */
+  html += '<div class="card"><h2>2. 각 툴에 대해 어떻게 생각하시나요?</h2>'+
+    '<div class="qhelp">위에서 고른 답에 따라 묻는 내용이 달라집니다. '+
+    '아직 1번을 고르지 않은 툴은 나타나지 않습니다.</div>';
+  var shown = 0;
+  (sc.tools||[]).forEach(function(t, i){
+    var aw = a.awareness[t.id];
+    if(!aw) return;
+    shown++;
+    var used = usedVal(aw);
+    var qs = used ? (sc.usedQuestions||[]) : (sc.unusedQuestions||[]);
+    var awLabel = '';
+    AW.forEach(function(o){ if(o.value===aw) awLabel=o.label; });
+    a.tools[t.id] = a.tools[t.id]||{};
+    html += '<div class="qblock tool"><div class="toolhead"><span class="n">2-'+shown+'. '+
+      h(t.name)+'</span><span class="pill '+(used?'open':'draft')+'">'+h(awLabel)+'</span></div>';
+    if(!used) html += '<div class="unused-note">써보지 않으셨다고 하셨으니 간단히 두 가지만 묻습니다.</div>';
+    qs.forEach(function(q, qi){
+      html += field(q, a.tools[t.id][q.id], 'tool:'+t.id+':'+q.id,
+                    '2-'+shown+'-'+(qi+1), ro);
+    });
+    html += '</div>';
+  });
+  if(!shown) html += '<p class="muted">1번 문항을 먼저 선택해 주세요.</p>';
+  html += '</div>';
+
+  /* --- Q3 공통 --- */
+  if((sc.commonQuestions||[]).length){
+    html += '<div class="card"><h2>3. Hub 전반에 대해</h2>';
+    (sc.commonQuestions||[]).forEach(function(q, i){
+      html += field(q, a.common[q.id], 'common:'+q.id, '3-'+(i+1), ro, sc.tools);
+    });
+    html += '</div>';
+  }
+  el('app').innerHTML = html;
+  drawFoot();
+}
+
+function inlineOk(opts){
+  opts = opts || [];
+  if(!opts.length || opts.length > 6) return false;
+  for(var i=0;i<opts.length;i++) if(String(opts[i]).length > 13) return false;
+  return true;
+}
+
+function field(q, val, key, num, ro, tools){
+  var bad = state.missing[key];
+  var h2 = '<div class="qblock'+(bad?' miss':'')+'" id="q_'+
+    h(key.replace(/[^\w]/g,'_'))+'">'+
+    '<div class="qtitle">'+h(num)+'. '+h(q.label)+
+    (q.required?'<span class="req">*</span>':'')+'</div>';
+  if(q.help) h2 += '<div class="qhelp">'+h(q.help)+'</div>';
+  var dis = ro?' disabled':'';
+  if(q.type==='single' || q.type==='multi'){
+    var multi = q.type==='multi';
+    var cur = multi ? (val||[]) : val;
+    h2 += '<div class="opts'+(inlineOk(q.options)?' inline':'')+'">'+
+      (q.options||[]).map(function(o){
+        var on = multi ? cur.indexOf(o)>=0 : cur===o;
+        return '<label class="opt'+(on?' on':'')+'"><input type="'+(multi?'checkbox':'radio')+
+          '" name="'+h(key)+'" '+(on?'checked ':'')+dis+
+          ' onchange="setVal(\''+h(key)+'\',this,'+(multi?'true':'false')+
+          ',\''+h(o).replace(/'/g,"\\'")+'\')"><span>'+h(o)+'</span></label>';
+      }).join('')+'</div>';
+  } else if(q.type==='toolpick'){
+    h2 += '<div class="opts">'+(tools||[]).map(function(t){
+      return '<label class="opt'+(val===t.id?' on':'')+'"><input type="radio" name="'+h(key)+
+        '" '+(val===t.id?'checked ':'')+dis+' onchange="setVal(\''+h(key)+
+        '\',this,false,\''+h(t.id)+'\')"><span>'+h(t.name)+'</span></label>';
+    }).join('')+'</div>';
+  } else {
+    h2 += '<textarea '+dis+' placeholder="'+h(q.placeholder||'')+
+      '" oninput="setVal(\''+h(key)+'\',this,false,null)">'+h(val||'')+'</textarea>';
+  }
+  return h2+'</div>';
+}
+
+function setAw(tid, v){
+  state.a.awareness[tid]=v;
+  delete state.missing['awareness:'+tid];
+  drawFill();
+  save(false, true);
+}
+function setVal(key, node, multi, optval){
+  var p = key.split(':');
+  var bag = p[0]==='common' ? state.a.common : (state.a.tools[p[1]] = state.a.tools[p[1]]||{});
+  var id = p[0]==='common' ? p[1] : p[2];
+  if(multi){
+    var arr = bag[id]||[];
+    var i = arr.indexOf(optval);
+    if(node.checked){ if(i<0) arr.push(optval); } else if(i>=0) arr.splice(i,1);
+    bag[id]=arr;
+  } else if(optval!==null){ bag[id]=optval; }
+  else { bag[id]=node.value; }
+  delete state.missing[key];
+  // 라디오/체크박스는 선택 표시를 즉시 반영한다 (서술형은 커서를 잃지 않도록 두고 본다)
+  if(optval!==null){
+    var box = node.closest('.opts');
+    if(box) Array.prototype.forEach.call(box.querySelectorAll('.opt'), function(l){
+      l.classList.toggle('on', l.querySelector('input').checked); });
+  }
+  clearTimeout(setVal._t);
+  setVal._t = setTimeout(function(){ save(false, true); }, 1200);
+  drawFoot();
+}
+
+function answered(){
+  var sc=state.s.schema, a=state.a, need=0, got=0;
+  (sc.tools||[]).forEach(function(t){
+    need++; if(a.awareness[t.id]) got++;
+    if(!a.awareness[t.id]) return;
+    var qs = usedVal(a.awareness[t.id]) ? (sc.usedQuestions||[]) : (sc.unusedQuestions||[]);
+    qs.forEach(function(q){
+      need++;
+      var v=(a.tools[t.id]||{})[q.id];
+      if(v!==undefined && v!=='' && !(Array.isArray(v)&&!v.length)) got++;
+    });
+  });
+  (sc.commonQuestions||[]).forEach(function(q){
+    need++; var v=a.common[q.id];
+    if(v!==undefined && v!=='' && !(Array.isArray(v)&&!v.length)) got++;
+  });
+  return {need:need, got:got};
+}
+
+function drawFoot(){
+  var old=el('foot'); if(old) old.remove();
+  if(state.readonly) return;
+  var p=answered();
+  var d=document.createElement('div');
+  d.className='sticky-foot'; d.id='foot';
+  d.innerHTML='<div class="in"><div class="prog"><div class="t">작성 '+p.got+' / '+p.need+
+    ' 문항<span id="savedAt" class="muted"></span></div><div class="g"><i style="width:'+
+    pct(p.got,p.need)+'%"></i></div></div>'+
+    '<button onclick="save(false)">임시저장</button>'+
+    '<button class="primary" onclick="save(true)">'+
+    (state.submitted?'수정 제출':'제출하기')+'</button></div>';
+  document.body.appendChild(d);
+}
+
+function save(submit, quiet){
+  return api('/api/surveys/'+state.sid+'/response',
+             {method:'POST', body:{answers:state.a, submitted:!!submit}})
+  .then(function(){
+    state.missing={};
+    if(submit){ state.submitted=true; toast('제출되었습니다. 감사합니다!');
+      setTimeout(function(){ go('#/'); }, 900); }
+    else if(!quiet) toast('임시저장했습니다.');
+    else { var s=el('savedAt'); if(s) s.textContent=' · 자동저장 '+fmt(Date.now()/1000); }
+  })
+  .catch(function(e){
+    if(e.data && e.data.missing){
+      state.missing={}; e.data.missing.forEach(function(k){ state.missing[k]=true; });
+      drawFill();
+      toast('빨간색으로 표시된 필수 문항을 채워주세요. ('+e.data.missing.length+'개)');
+      var first=document.querySelector('.miss');
+      if(first) first.scrollIntoView({behavior:'smooth',block:'center'});
+    } else if(!quiet) toast(e.message);
+  });
+}
+
+/* ============================================================== 결과 화면 */
+function viewResults(sid){
+  api('/api/surveys/'+sid+'/results').then(function(d){
+    AW=d.awarenessOptions;
+    state={sid:sid, d:d, tab:'sum'};
+    drawResults();
+  }).catch(err);
+}
+function rtab(t){ state.tab=t; drawResults(); }
+
+function barRow(label, n, total){
+  return '<tr><td>'+h(label)+'</td><td style="width:45%"><div class="bar"><i style="width:'+
+    pct(n,total)+'%"></i></div></td><td class="cnt">'+n+'명 ('+pct(n,total)+'%)</td></tr>';
+}
+function countTable(obj, total){
+  var keys=Object.keys(obj);
+  if(!keys.length) return '<p class="muted">-</p>';
+  return '<table>'+keys.map(function(k){ return barRow(k, obj[k], total); }).join('')+'</table>';
+}
+
+function drawResults(){
+  var d=state.d, s=d.survey, sc=s.schema, agg=d.agg, T=agg.total;
+  var head='<div class="card"><div class="row"><div><h1 style="margin:0">'+h(s.title)+'</h1>'+
+    '<div class="muted">응답 결과</div></div>'+
+    '<div class="right row">'+
+    (d.admin?'<button onclick="location.href=\'/api/surveys/'+state.sid+
+      '/export.csv\'">CSV 내보내기</button>':'')+
+    (d.admin?'<button onclick="go(\'#/edit/'+state.sid+'\')">설문 편집</button>':'')+
+    '</div></div>'+
+    '<div class="kpi" style="margin-top:12px">'+
+    '<div class="k"><b>'+T+'</b><span>제출 인원</span></div>'+
+    '<div class="k"><b>'+d.hubUsers+'</b><span>Hub 전체 인원</span></div>'+
+    '<div class="k"><b>'+rate(T,d.hubUsers)+'%</b><span>응답률</span></div>'+
+    '<div class="k"><b>'+(d.pending.length||'-')+'</b><span>미응답</span></div>'+
+    '</div></div>';
+
+  var tabs='<div class="card"><div class="tabs">'+
+    [['sum','요약'],['tool','툴별 상세'],['open','서술형 모아보기'],['who','응답자 현황']]
+    .map(function(t){ return '<button class="'+(state.tab===t[0]?'on':'')+
+      '" onclick="rtab(\''+t[0]+'\')">'+t[1]+'</button>'; }).join('')+'</div>';
+
+  var body='';
+  if(!T){ body='<p class="lead">아직 제출된 응답이 없습니다.</p>'; }
+  else if(state.tab==='sum'){
+    body += '<h3>툴 인지도 / 사용 현황</h3><table><thead><tr><th>툴</th>'+
+      AW.map(function(o){ return '<th class="cnt">'+h(o.label)+'</th>'; }).join('')+
+      '<th class="cnt">사용 경험</th></tr></thead><tbody>';
+    (sc.tools||[]).forEach(function(t){
+      var c=agg.awareness[t.id]||{};
+      var used=0; AW.forEach(function(o){ if(o.used) used+=(c[o.value]||0); });
+      body += '<tr><td><b>'+h(t.name)+'</b></td>'+
+        AW.map(function(o){ return '<td class="cnt">'+(c[o.value]||0)+'</td>'; }).join('')+
+        '<td class="cnt"><b>'+pct(used,T)+'%</b></td></tr>';
+    });
+    body += '</tbody></table>';
+    (sc.commonQuestions||[]).forEach(function(q){
+      if(q.type==='textarea') return;
+      body += '<h3>'+h(q.label)+'</h3>'+countTable(agg.common[q.id]||{}, T);
+    });
+  }
+  else if(state.tab==='tool'){
+    (sc.tools||[]).forEach(function(t){
+      var pt=agg.tools[t.id]||{used:{},unused:{},texts:{}};
+      var c=agg.awareness[t.id]||{};
+      var used=0; AW.forEach(function(o){ if(o.used) used+=(c[o.value]||0); });
+      body += '<div class="qblock tool"><div class="toolhead"><span class="n">'+h(t.name)+
+        '</span><span class="muted">사용 경험 '+used+'명 / '+T+'명</span></div>';
+      (sc.usedQuestions||[]).forEach(function(q){
+        if(q.type==='textarea') return;
+        body += '<h3>'+h(q.label)+'</h3>'+countTable(pt.used[q.id]||{}, used||1);
+      });
+      (sc.unusedQuestions||[]).forEach(function(q){
+        if(q.type==='textarea') return;
+        var any=pt.unused[q.id]||{}; var sum=0;
+        Object.keys(any).forEach(function(k){ sum+=any[k]; });
+        if(!sum) return;
+        body += '<h3 style="color:var(--ink2)">[안 쓰는 분] '+h(q.label)+'</h3>'+
+          countTable(any, T-used||1);
+      });
+      var tx=[];
+      Object.keys(pt.texts||{}).forEach(function(qid){
+        (pt.texts[qid]||[]).forEach(function(o){ tx.push(o); }); });
+      if(tx.length) body += '<h3>개선 의견 ('+tx.length+'건)</h3><ul class="texts">'+
+        tx.map(function(o){ return '<li><span class="who">'+h(o.who)+
+          '</span><div class="tx">'+h(o.text)+'</div></li>'; }).join('')+'</ul>';
+      body += '</div>';
+    });
+  }
+  else if(state.tab==='open'){
+    var any=false;
+    (sc.tools||[]).forEach(function(t){
+      var pt=agg.tools[t.id]||{texts:{}};
+      Object.keys(pt.texts||{}).forEach(function(qid){
+        var list=pt.texts[qid]||[]; if(!list.length) return; any=true;
+        body += '<h3>'+h(t.name)+' — 개선 의견</h3><ul class="texts">'+
+          list.map(function(o){ return '<li><span class="who">'+h(o.who)+
+            '</span><div class="tx">'+h(o.text)+'</div></li>'; }).join('')+'</ul>';
+      });
+    });
+    (sc.commonQuestions||[]).forEach(function(q){
+      if(q.type!=='textarea') return;
+      var list=agg.common[q.id]||[]; if(!list.length) return; any=true;
+      body += '<h3>'+h(q.label)+' ('+list.length+'건)</h3><ul class="texts">'+
+        list.map(function(o){ return '<li><span class="who">'+h(o.who)+
+          '</span><div class="tx">'+h(o.text)+'</div></li>'; }).join('')+'</ul>';
+    });
+    if(!any) body='<p class="muted">서술형 응답이 아직 없습니다.</p>';
+  }
+  else {
+    body += '<h3>제출 ('+d.respondents.length+'명)</h3><table><thead><tr><th>이름</th>'+
+      '<th>제출시각</th><th></th></tr></thead><tbody>'+
+      d.respondents.map(function(r){ return '<tr><td>'+h(r.who)+'</td><td>'+fmt(r.at)+'</td>'+
+        '<td class="right">'+(d.admin&&r.username?'<button class="ghost" onclick="go(\'#/one/'+
+        state.sid+'/'+encodeURIComponent(r.username)+'\')">응답 보기</button>':'')+
+        '</td></tr>'; }).join('')+'</tbody></table>';
+    if(d.pending.length) body += '<h3>미응답 ('+d.pending.length+'명)</h3><table><tbody>'+
+      d.pending.map(function(p){ return '<tr><td>'+h(p.who)+'</td><td><span class="pill '+
+        (p.state==='작성중'?'part':'none')+'">'+h(p.state)+'</span></td></tr>'; }).join('')+
+      '</tbody></table>';
+  }
+  el('app').innerHTML = head + tabs + body + '</div>';
+  var f=el('foot'); if(f) f.remove();
+}
+
+/* --------------------------------------------------------- 개인 응답 보기 */
+function viewOne(sid, who){
+  api('/api/surveys/'+sid+'/response/'+encodeURIComponent(who)).then(function(d){
+    AW=d.awarenessOptions;
+    var sc=d.survey.schema, a=d.answers;
+    var awl={}; AW.forEach(function(o){ awl[o.value]=o.label; });
+    var html='<div class="card"><div class="row"><h1 style="margin:0">'+h(d.who)+' 님의 응답</h1>'+
+      '<button class="right" onclick="go(\'#/results/'+sid+'\')">결과로 돌아가기</button></div>'+
+      '<div class="muted">'+h(d.survey.title)+'</div></div><div class="card">';
+    (sc.tools||[]).forEach(function(t){
+      var aw=(a.awareness||{})[t.id];
+      html += '<div class="qblock tool"><div class="toolhead"><span class="n">'+h(t.name)+
+        '</span><span class="pill '+(aw&&usedVal(aw)?'open':'draft')+'">'+
+        h(awl[aw]||'무응답')+'</span></div>';
+      var qs = aw&&usedVal(aw) ? (sc.usedQuestions||[]) : (sc.unusedQuestions||[]);
+      qs.forEach(function(q){
+        var v=((a.tools||{})[t.id]||{})[q.id];
+        if(v===undefined||v===''||(Array.isArray(v)&&!v.length)) return;
+        html += '<div style="margin-bottom:7px"><div class="muted">'+h(q.label)+'</div>'+
+          '<div style="white-space:pre-wrap">'+h(Array.isArray(v)?v.join(', '):v)+'</div></div>';
+      });
+      html += '</div>';
+    });
+    (sc.commonQuestions||[]).forEach(function(q){
+      var v=(a.common||{})[q.id];
+      if(v===undefined||v===''||(Array.isArray(v)&&!v.length)) return;
+      if(q.type==='toolpick'){ (sc.tools||[]).forEach(function(t){ if(t.id===v) v=t.name; }); }
+      html += '<div class="qblock"><div class="qtitle">'+h(q.label)+'</div>'+
+        '<div style="white-space:pre-wrap">'+h(Array.isArray(v)?v.join(', '):v)+'</div></div>';
+    });
+    el('app').innerHTML = html+'</div>';
+    var f=el('foot'); if(f) f.remove();
+  }).catch(err);
+}
+
+/* ============================================================== 설문 편집 */
+function viewEdit(sid){
+  api('/api/surveys/'+sid).then(function(d){
+    state={sid:sid, s:JSON.parse(JSON.stringify(d.survey))};
+    AW=d.awarenessOptions;
+    drawEdit();
+  }).catch(err);
+}
+
+function drawEdit(){
+  var s=state.s, sc=s.schema;
+  var html='<div class="card"><div class="row"><h1 style="margin:0">설문 편집</h1>'+
+    '<div class="right row"><button onclick="go(\'#/survey/'+state.sid+
+      '\')">응답 화면 미리보기</button>'+
+    '<button class="primary" onclick="saveEdit()">저장</button></div></div></div>';
+
+  html += '<div class="card"><h2>기본 정보</h2>'+
+    '<div class="f"><label>제목</label><input type="text" id="e_title" value="'+h(s.title)+'"></div>'+
+    '<div class="f"><label>안내문 (응답 화면 맨 위에 그대로 보입니다)</label>'+
+    '<textarea id="e_intro" style="min-height:90px">'+h(s.intro)+'</textarea></div>'+
+    '<div class="f"><label>공개 상태</label><select id="e_status">'+
+    [['draft','작성중 — 관리자만 보임'],['open','진행중 — 팀원이 응답할 수 있음'],
+     ['closed','종료 — 응답 마감, 결과만 열람']]
+    .map(function(o){ return '<option value="'+o[0]+'"'+(s.status===o[0]?' selected':'')+'>'+
+      o[1]+'</option>'; }).join('')+'</select></div>'+
+    '<div class="row" style="gap:18px;margin-top:4px">'+
+    '<label class="opt"><input type="checkbox" id="e_anon"'+(s.anonymous?' checked':'')+
+      '><span>익명 설문 (결과에서 이름을 가립니다 — CSV에도 이름이 빠집니다)</span></label>'+
+    '<label class="opt"><input type="checkbox" id="e_show"'+(s.showResults?' checked':'')+
+      '><span>팀원도 결과를 볼 수 있게 한다</span></label></div></div>';
+
+  /* 툴 목록 */
+  html += '<div class="card"><h2>1번 문항 — 묻고 싶은 툴 목록</h2>'+
+    '<div class="f"><label>문항 제목</label><input type="text" id="e_awl" value="'+
+      h(sc.awarenessLabel||'')+'"></div>'+
+    '<div class="f"><label>안내 문구</label><input type="text" id="e_awh" value="'+
+      h(sc.awarenessHelp||'')+'"></div><hr>'+
+    '<table><thead><tr><th>표시 이름</th><th>설명 (선택)</th><th></th></tr></thead><tbody>'+
+    (sc.tools||[]).map(function(t,i){
+      return '<tr><td><input type="text" value="'+h(t.name)+
+        '" oninput="editTool('+i+',\'name\',this.value)"></td>'+
+        '<td><input type="text" value="'+h(t.desc||'')+
+        '" oninput="editTool('+i+',\'desc\',this.value)"></td>'+
+        '<td class="right"><button class="ghost" onclick="moveTool('+i+',-1)">↑</button>'+
+        '<button class="ghost" onclick="moveTool('+i+',1)">↓</button>'+
+        '<button class="danger" onclick="delTool('+i+')">삭제</button></td></tr>';
+    }).join('')+'</tbody></table>'+
+    '<div style="margin-top:10px"><button onclick="addTool()">+ 툴 추가</button></div></div>';
+
+  html += qsEditor('usedQuestions', '2번 문항 — 써본 툴에 대해 묻는 내용',
+    '툴마다 이 문항들이 반복됩니다. (1번에서 "자주 쓴다 / 몇 번 써봤다"를 고른 경우)');
+  html += qsEditor('unusedQuestions', '2번 문항 — 안 써본 툴에 대해 묻는 내용',
+    '1번에서 "들어는 봤다 / 처음 들어본다"를 고른 경우에 나옵니다.');
+  html += qsEditor('commonQuestions', '3번 문항 — 공통 질문',
+    '툴과 상관없이 한 번만 묻습니다.');
+
+  html += '<div class="card"><div class="row"><button class="primary" onclick="saveEdit()">저장</button>'+
+    '<button class="danger right" onclick="delSurvey()">이 설문 삭제</button></div></div>';
+  el('app').innerHTML=html;
+  var f=el('foot'); if(f) f.remove();
+}
+
+var QTYPES=[['single','하나만 선택'],['multi','여러 개 선택'],['textarea','서술형(직접 입력)'],
+            ['toolpick','툴 중에서 하나 고르기']];
+
+function qsEditor(group, title, help){
+  var list=state.s.schema[group]||[];
+  return '<div class="card"><h2>'+h(title)+'</h2><div class="qhelp">'+h(help)+'</div>'+
+    list.map(function(q,i){
+      var opts = (q.type==='single'||q.type==='multi')
+        ? '<div class="f"><label>보기 (한 줄에 하나)</label><textarea oninput="editQ(\''+
+          group+'\','+i+',\'options\',this.value)">'+h((q.options||[]).join('\n'))+
+          '</textarea></div>' : '';
+      var ph = q.type==='textarea'
+        ? '<div class="f"><label>입력란 안내문(연필 글씨)</label><input type="text" value="'+
+          h(q.placeholder||'')+'" oninput="editQ(\''+group+'\','+i+
+          ',\'placeholder\',this.value)"></div>' : '';
+      return '<div class="editq"><div class="hd">'+
+        '<select onchange="editQ(\''+group+'\','+i+',\'type\',this.value)">'+
+        QTYPES.map(function(t){ return '<option value="'+t[0]+'"'+(q.type===t[0]?' selected':'')+
+          '>'+t[1]+'</option>'; }).join('')+'</select>'+
+        '<label class="opt"><input type="checkbox"'+(q.required?' checked':'')+
+          ' onchange="editQ(\''+group+'\','+i+',\'required\',this.checked)"><span>필수</span></label>'+
+        '<span class="right"><button class="ghost" onclick="moveQ(\''+group+'\','+i+
+          ',-1)">↑</button><button class="ghost" onclick="moveQ(\''+group+'\','+i+
+          ',1)">↓</button><button class="danger" onclick="delQ(\''+group+'\','+i+
+          ')">삭제</button></span></div>'+
+        '<div class="f"><label>질문</label><input type="text" value="'+h(q.label)+
+          '" oninput="editQ(\''+group+'\','+i+',\'label\',this.value)"></div>'+
+        opts+ph+'</div>';
+    }).join('')+
+    '<button onclick="addQ(\''+group+'\')">+ 문항 추가</button></div>';
+}
+
+function slug(){ return 'q'+Math.random().toString(36).slice(2,8); }
+function editTool(i,k,v){ state.s.schema.tools[i][k]=v;
+  if(k==='name' && !state.s.schema.tools[i].id) state.s.schema.tools[i].id=slug(); }
+function addTool(){ state.s.schema.tools.push({id:slug(),name:'새 툴',desc:''}); drawEdit(); }
+function delTool(i){ if(!confirm('이 툴을 문항에서 빼시겠습니까?\n이미 들어온 응답의 해당 항목은 집계에서 제외됩니다.')) return;
+  state.s.schema.tools.splice(i,1); drawEdit(); }
+function moveTool(i,d){ var a=state.s.schema.tools, j=i+d;
+  if(j<0||j>=a.length) return; var t=a[i]; a[i]=a[j]; a[j]=t; drawEdit(); }
+function editQ(g,i,k,v){
+  if(k==='options') v=v.split('\n').map(function(x){ return x.trim(); }).filter(Boolean);
+  state.s.schema[g][i][k]=v;
+  if(k==='type') drawEdit();
+}
+function addQ(g){ state.s.schema[g].push({id:slug(),type:'single',label:'새 질문',
+  options:['예','아니오'],required:false}); drawEdit(); }
+function delQ(g,i){ state.s.schema[g].splice(i,1); drawEdit(); }
+function moveQ(g,i,d){ var a=state.s.schema[g], j=i+d;
+  if(j<0||j>=a.length) return; var t=a[i]; a[i]=a[j]; a[j]=t; drawEdit(); }
+
+function saveEdit(){
+  var s=state.s;
+  s.title=el('e_title').value.trim()||s.title;
+  s.intro=el('e_intro').value;
+  s.status=el('e_status').value;
+  s.anonymous=el('e_anon').checked;
+  s.showResults=el('e_show').checked;
+  s.schema.awarenessLabel=el('e_awl').value;
+  s.schema.awarenessHelp=el('e_awh').value;
+  (s.schema.tools||[]).forEach(function(t){ if(!t.id) t.id=slug(); });
+  ['usedQuestions','unusedQuestions','commonQuestions'].forEach(function(g){
+    (s.schema[g]||[]).forEach(function(q){ if(!q.id) q.id=slug(); }); });
+  api('/api/surveys/'+state.sid,{method:'PUT',body:{title:s.title,intro:s.intro,
+      status:s.status,anonymous:s.anonymous,showResults:s.showResults,schema:s.schema}})
+    .then(function(){ toast('저장했습니다.'+(s.status==='open'?' 팀원이 응답할 수 있습니다.':'')); })
+    .catch(function(e){ toast(e.message); });
+}
+function delSurvey(){
+  if(!confirm('설문과 지금까지 들어온 응답을 모두 지웁니다. 되돌릴 수 없습니다.\n계속하시겠습니까?')) return;
+  api('/api/surveys/'+state.sid,{method:'DELETE'})
+    .then(function(){ go('#/'); }).catch(function(e){ toast(e.message); });
+}
+</script>
+</body>
+</html>
