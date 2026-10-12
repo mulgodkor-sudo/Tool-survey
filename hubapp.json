@@ -1,0 +1,7 @@
+{
+  "name": "Tool Survey",
+  "version": "1.0",
+  "category": "Team",
+  "type": "web",
+  "description": "팀 공용 툴에 대한 설문조사 — 인원별로 응답하고 결과를 표/대시보드로 확인 (CSV 내보내기)"
+}
