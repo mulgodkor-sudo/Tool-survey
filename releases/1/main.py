@@ -77,18 +77,22 @@ def _read(path):
 # ============================================================== 기본 문항 구성
 # 첫 실행 때 이 내용으로 설문 1개가 만들어진다. 이후에는 관리 화면에서 고친다.
 DEFAULT_TOOLS = [
-    {"id": "vpstatus", "name": "VP Status 대시보드",
-     "desc": "Vendor Print 제출/승인 현황 대시보드 (:8106)"},
-    {"id": "tclhub", "name": "TCL Hub",
-     "desc": "Technical Clarification List 관리 (:8112)"},
-    {"id": "designcriteria", "name": "Design Criteria Builder",
-     "desc": "회전기기 Design Criteria 작성 후 Word 내보내기"},
-    {"id": "docuscanpro", "name": "DocuScanPro",
-     "desc": "문서/도면 스캔·정리 (각자 PC에서 실행하는 다운로드형)"},
-    {"id": "conveyorcalc", "name": "MHS ConveyorCalc",
-     "desc": "컨베이어 설계 계산 (:8107)"},
-    {"id": "worklog", "name": "Worklog Hub",
-     "desc": "업무일지 작성/집계"},
+    {"id": "vpstatus", "name": "VP Status Dashboard", "cat": "Project Work", "kind": "WEB", "icon": "chart", "desc": "VP Status List 업로드 / MR별 승인율 · 변경 추적 / 주간보고 Excel"},
+    {"id": "tclhub", "name": "TCL Hub", "cat": "Project Work", "kind": "WEB", "abbr": "TH", "color": "#3b82e0", "desc": "Technical Clarification List 관리 — 항목별 영구 ID / 리비전 관리 / Word 양방향 동기화(3-way) / 과거 TCL 지식 검색"},
+    {"id": "q8c54qj", "name": "L&G Hub", "cat": "Project Work", "kind": "HTML", "abbr": "LH", "color": "#8b7fe0", "desc": "루브리컨트(Lubricant), 그리스(Grease) DB"},
+    {"id": "qquw678", "name": "Equipment Item DB", "cat": "Project Work", "kind": "MSI", "abbr": "EI", "color": "#d24f80", "desc": "Equipment Item 데이터베이스 — ECS, SES, ECM 수행 프로젝트 item을 쉽게 찾아 reference로 활용"},
+    {"id": "designcriteria", "name": "Design Criteria Builder", "cat": "Document Tools", "kind": "HTML", "abbr": "DC", "color": "#14891f", "desc": "회전기기 Design Criteria 작성 도구 — 항목 구성 후 Word(.docx)로 내보내기, 작업 내용은 JSON으로 저장/불러오기"},
+    {"id": "qyel51y", "name": "Design Plan Builder", "cat": "Document Tools", "kind": "HTML", "abbr": "DP", "color": "#e0675f", "desc": "기계 설계업무 수행 계획서(Design Plan) 작성 도구 — 조직·업무범위·기계규모(합계 자동) 입력 후 Word(.docx)로 내보내기, 작업 내용은 JSON으로 저장/불러오기"},
+    {"id": "qwie97q", "name": "DocComparePro", "cat": "Auto Tools", "kind": "EXE", "abbr": "DV", "color": "#e0692c", "desc": "PDF 도면 비교 Tool"},
+    {"id": "docuscanpro", "name": "DocuScanPro", "cat": "Auto Tools", "kind": "EXE", "icon": "scan", "desc": "내 PC 문서 통합 검색 — PDF/DOCX/XLSX/PPTX/HWP/DWG 본문·파일명 검색, 키워드 패키지, 이미지 OCR"},
+    {"id": "qgf18hy", "name": "Excel2Markup(Rotating)", "cat": "Auto Tools", "kind": "EXE", "abbr": "EX", "color": "#1f9a5b", "desc": "Excel에 있는 keyword를 PDF에 하이라이트 하는 tool"},
+    {"id": "qeqehef", "name": "FileRename", "cat": "Auto Tools", "kind": "EXE", "abbr": "FR", "color": "#22a06b", "desc": "폴더 내 파일 이름 일괄 변경 도구"},
+    {"id": "q994d1o", "name": "DocMergeStudio", "cat": "Auto Tools", "kind": "EXE", "abbr": "DM", "color": "#8c84e6", "desc": "PDF, Docx, Excel을 pdf로 합치는 도구"},
+    {"id": "qdt0udg", "name": "PSTMailExplorer", "cat": "Auto Tools", "kind": "EXE", "abbr": "PS", "color": "#e06c6c", "desc": "Outlook을 닫고 PST파일에서 msg 형태의 본문만 검색하는 tool"},
+    {"id": "conveyorcalc", "name": "MHSConveyorCalc", "cat": "Calculator", "kind": "WEB", "icon": "dle", "desc": "컨베이어 설계 파워 계산"},
+    {"id": "worklog", "name": "Worklog Hub", "cat": "일정관리", "kind": "WEB", "abbr": "WH", "color": "#14891f", "desc": "팀 공용 일정관리 Tool (업무일지 작성/집계)"},
+    {"id": "q2v77ma", "name": "Outlook Extractor", "cat": "일정관리", "kind": "EXE", "abbr": "OE", "color": "#d24f80", "desc": "아웃룩 일정을 Worklog에 올리기 위한 추출 도구"},
+    {"id": "weeklyreport", "name": "Weekly Report Automater", "cat": "일정관리", "kind": "EXE", "icon": "wra", "desc": "아웃룩 일정을 그대로 Weekly Report로 출력하는 도구"},
 ]
 
 SCALE_EASE = ["매우 편하다", "편하다", "보통이다", "불편하다", "매우 불편하다"]
@@ -96,35 +100,16 @@ SCALE_HELP = ["업무에 매우 도움이 된다", "도움이 된다", "보통�
               "별로 도움이 안 된다", "전혀 도움이 안 된다"]
 
 DEFAULT_USED_QUESTIONS = [
-    {"id": "prod", "type": "single",
-     "label": "이 툴을 쓰면서 일주일(Week)에 업무 시간이 얼마나 줄었나요? (생산성 향상)",
-     "options": ["도움 안 됨", "약 10분", "약 30분", "약 1시간", "약 2시간 이상"],
-     "required": True},
-    {"id": "prodwhy", "type": "multi", "label": "어떤 면에서 시간이 줄었나요? (여러 개 선택 가능)",
-     "options": ["반복 수작업 감소", "자료 검색·조회 시간 단축", "문서·보고서 작성 시간 단축",
-                 "오류·재작업 감소", "현황 파악·취합 시간 단축", "타 부서·협력사와 공유 용이",
-                 "효과를 느끼지 못했다"], "required": False},
-    {"id": "ease", "type": "single", "label": "사용하기에 편한가요?",
-     "options": SCALE_EASE, "required": False},
-    {"id": "pain", "type": "multi", "label": "불편한 점이 있다면 골라주세요 (여러 개 선택 가능)",
-     "options": ["속도가 느리다", "화면이 복잡하다", "원하는 기능을 찾기 어렵다",
-                 "결과가 부정확하거나 믿기 어렵다", "오류·멈춤이 잦다",
-                 "설명서/안내가 부족하다", "엑셀 등 기존 방식이 더 편하다",
-                 "특별히 불편한 점은 없다"], "required": False},
-    {"id": "improve", "type": "textarea",
-     "label": "개선되면 좋겠다고 생각하는 사항",
-     "placeholder": "예) 담당자별로 필터를 걸고 싶다 / 엑셀로 내보낼 때 서식이 깨진다",
-     "required": False},
+    {"id": "ease", "type": "single", "label": "사용하기에 편한가요?", "options": ["매우 편하다", "편하다", "보통이다", "불편하다", "매우 불편하다"], "required": True},
+    {"id": "help", "type": "single", "label": "업무에 도움(생산성 향상)이 되나요?", "options": ["업무에 매우 도움이 된다", "도움이 된다", "보통이다", "별로 도움이 안 된다", "전혀 도움이 안 된다"], "required": True},
+    {"id": "prod", "type": "single", "label": "도움이 된다면, 일주일(Week)에 업무 시간을 어느 정도 줄여주나요?", "options": ["약 10분", "약 30분", "약 1시간", "약 2시간 이상"], "required": False, "requireShown": True, "when": {"q": "help", "in": ["업무에 매우 도움이 된다", "도움이 된다", "보통이다"]}},
+    {"id": "pain", "type": "multi", "label": "불편한 점이 있다면 골라주세요 (여러 개 선택 가능)", "options": ["속도가 느리다", "화면이 복잡하다", "원하는 기능을 찾기 어렵다", "결과가 부정확하거나 믿기 어렵다", "오류·멈춤이 잦다", "설명서/안내가 부족하다", "엑셀 등 기존 방식이 더 편하다", "특별히 불편한 점은 없다"], "required": False},
+    {"id": "improve", "type": "textarea", "label": "개선되면 좋겠다고 생각하는 사항", "placeholder": "예) 담당자별로 필터를 걸고 싶다 / 엑셀로 내보낼 때 서식이 깨진다", "required": False},
 ]
 
 DEFAULT_UNUSED_QUESTIONS = [
-    {"id": "why", "type": "multi", "label": "쓰지 않는 이유는 무엇인가요? (여러 개 선택 가능)",
-     "options": ["내 업무와 관련이 없다", "사용법을 몰라서", "접속 방법을 몰라서",
-                 "기존 방식(엑셀 등)이 편해서", "써봤는데 불편해서",
-                 "그냥 기회가 없었다"], "required": False},
-    {"id": "want", "type": "single", "label": "설명을 들으면 써보실 생각이 있나요?",
-     "options": ["설명을 들으면 써보고 싶다", "아직 필요하지 않다", "잘 모르겠다"],
-     "required": False},
+    {"id": "why", "type": "multi", "label": "쓰지 않는 이유는 무엇인가요? (여러 개 선택 가능)", "options": ["이런 툴이 있는지 몰랐다", "내 업무와 관련이 없다", "사용법을 몰라서", "접속 방법을 몰라서", "기존 방식(엑셀 등)이 편해서", "써봤는데 불편해서", "그냥 기회가 없었다"], "required": False},
+    {"id": "want", "type": "single", "label": "설명을 들으면 써보실 생각이 있나요?", "options": ["설명을 들으면 써보고 싶다", "아직 필요하지 않다", "잘 모르겠다"], "required": False},
 ]
 
 DEFAULT_COMMON_QUESTIONS = [
@@ -159,9 +144,8 @@ USED_VALUES = {"often", "tried"}
 def default_schema():
     return {
         "tools": [dict(t) for t in DEFAULT_TOOLS],
-        "awarenessLabel": "어떤 툴에 대해 알고 계신가요?",
-        "awarenessHelp": "툴마다 하나씩 골라주세요. 써본 툴(자주 쓴다/몇 번 써봤다)은 아래에서 먼저 "
-                         "생산성 평가 문항이 나오고, 안 써본 툴은 그 뒤에 간단히 묻습니다.",
+        "awarenessLabel": "사용해 본(사용 중인) 툴을 모두 선택해 주세요",
+        "awarenessHelp": "Hub 화면과 같은 카드입니다. 한 번이라도 써본 툴의 카드를 눌러 체크해 주세요. 체크한 툴은 다음 단계에서 하나씩 평가하고, 체크하지 않은 툴은 그 뒤에 짧게 묻습니다.",
         "usedQuestions": [dict(q) for q in DEFAULT_USED_QUESTIONS],
         "unusedQuestions": [dict(q) for q in DEFAULT_UNUSED_QUESTIONS],
         "commonQuestions": [dict(q) for q in DEFAULT_COMMON_QUESTIONS],
@@ -170,9 +154,8 @@ def default_schema():
 
 DEFAULT_INTRO = (
     "기계설계팀 공용 툴(Engineering Hub)에 대한 의견을 묻는 설문입니다.\n"
-    "특히 써본 툴이 업무 생산성(주당 절감 시간)에 얼마나 도움이 되었는지를 중심으로 묻고, "
-    "앞으로 어떤 툴을 손보고 무엇을 새로 만들지 정하는 데 그대로 쓰입니다.\n"
-    "모르는 툴은 '처음 들어본다'를 고르시면 됩니다. 5~10분 정도 걸립니다."
+    "써본 툴이 업무 생산성에 얼마나 도움이 되는지를 중심으로 묻고, 결과는 어떤 툴을 손보고 무엇을 새로 만들지 정하는 데 그대로 쓰입니다.\n"
+    "① 써본 툴 선택 → ② 써본 툴 평가 → ③ 안 써본 툴 → ④ Hub 전반 순서로 진행되며 5~10분 정도 걸립니다. 중간에 나가도 자동 저장됩니다."
 )
 
 

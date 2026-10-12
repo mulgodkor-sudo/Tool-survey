@@ -82,8 +82,64 @@ tr.miss{background:var(--bad-soft)}
 .awtable td.ch{text-align:center;white-space:nowrap}
 .awtable .tname{font-weight:600}
 .awtable .tdesc{color:var(--ink3);font-size:12px;font-weight:400}
-h3.grp{font-size:14.5px;margin:18px 0 10px;padding:7px 11px;background:var(--accent-soft);
-  color:var(--accent);border-radius:7px}
+/* ---- 단계별 응답 ---- */
+.fhead h1{margin-bottom:4px}
+.stepper{display:flex;gap:6px;margin-top:14px}
+.stepper .s{flex:1;padding-top:8px;border-top:3px solid #e3e8f0;font-size:12.5px;color:var(--ink3);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stepper .s .no{display:inline-block;width:18px;height:18px;line-height:18px;border-radius:50%;
+  background:#e3e8f0;color:var(--ink2);text-align:center;font-size:11px;font-weight:700;margin-right:5px}
+.stepper .s.done{border-top-color:#9cc0e6;color:var(--ink2)}
+.stepper .s.done .no{background:#9cc0e6;color:#fff}
+.stepper .s.cur{border-top-color:var(--accent);color:var(--accent);font-weight:700}
+.stepper .s.cur .no{background:var(--accent);color:#fff}
+.pickbar{display:flex;align-items:center;gap:10px;margin:2px 0 4px;font-size:13.5px}
+.pickbar b{color:var(--accent);font-size:16px}
+.catttl{font-size:11.5px;letter-spacing:1.3px;color:var(--ink3);font-weight:700;margin:18px 0 8px;
+  text-transform:uppercase}
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(228px,1fr));gap:10px}
+.tcard{position:relative;border:1.5px solid var(--line);border-radius:12px;padding:12px 13px 10px;
+  background:#fff;cursor:pointer;user-select:none;transition:border-color .12s,box-shadow .12s,background .12s;
+  display:flex;flex-direction:column}
+.tcard:hover{border-color:#b6c4d9;box-shadow:0 2px 10px rgba(30,50,90,.08)}
+.tcard:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tcard.on{border-color:var(--accent);background:#f2f7fe;box-shadow:0 0 0 3px var(--accent-soft)}
+.tcard.ro{cursor:default}
+.tchk{position:absolute;top:10px;right:10px;width:22px;height:22px;border-radius:50%;
+  border:1.5px solid #c5cfdd;background:#fff;color:transparent;display:flex;align-items:center;
+  justify-content:center;font-size:12px;font-weight:800}
+.tcard.on .tchk{background:var(--accent);border-color:var(--accent);color:#fff}
+.thead{display:flex;gap:11px;align-items:center;margin-bottom:8px;padding-right:26px}
+.ticon{position:relative;flex:none;width:42px;height:42px;border-radius:10px;display:flex;
+  align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15px;letter-spacing:-.3px}
+.ticon svg{width:100%;height:100%;display:block;border-radius:10px}
+.ticon .kind{position:absolute;right:-5px;bottom:-5px;font-style:normal;font-size:8.5px;font-weight:800;
+  background:#1d2430;color:#fff;border-radius:4px;padding:0 3px;line-height:13px;letter-spacing:0}
+.ticon.lg{width:58px;height:58px;font-size:20px;border-radius:13px}
+.ticon.lg svg{border-radius:13px}
+.ticon.sm{width:34px;height:34px;font-size:12.5px;border-radius:8px}
+.ticon.sm svg{border-radius:8px}
+.ticon.sm .kind{display:none}
+.tnm{font-weight:700;font-size:14px;line-height:1.3;overflow-wrap:anywhere}
+.thead>div{min-width:0}
+.tcat{font-size:11.5px;color:var(--ink3)}
+.tds{font-size:12.5px;color:var(--ink2);line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;
+  -webkit-box-orient:vertical;overflow:hidden}
+.tds.one{-webkit-line-clamp:1}
+.tds.full{display:block;overflow:visible}
+.tstate{margin-top:auto;padding-top:8px;font-size:12px;color:var(--ink3)}
+.tcard.on .tstate{color:var(--accent);font-weight:700}
+.tphead{display:flex;gap:16px;align-items:center}
+.tpname{font-size:20px;font-weight:700;line-height:1.3;margin:1px 0 3px}
+.qno{display:inline-block;min-width:26px;color:var(--accent);font-weight:800}
+.ucard{border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px 4px;margin-bottom:12px}
+.uhead{display:flex;gap:10px;align-items:center;margin-bottom:8px}
+.qblock.compact{border:none;padding:4px 0 8px;margin:0;background:none}
+.qblock.compact.miss{background:var(--bad-soft);padding:6px 8px 8px;border-radius:7px}
+.donecard{text-align:center;padding:40px 20px}
+.donecard .big{width:64px;height:64px;line-height:64px;border-radius:50%;background:var(--ok-soft);
+  color:var(--ok);font-size:32px;font-weight:800;margin:0 auto 12px}
+.donecard .lead{text-align:center}
 .toolhead{display:flex;align-items:center;gap:8px;margin-bottom:4px}
 .toolhead .n{font-weight:700;font-size:14.5px}
 .unused-note{background:#fafbfd;border:1px dashed var(--line);border-radius:7px;
@@ -129,6 +185,17 @@ h3.grp{font-size:14.5px;margin:18px 0 10px;padding:7px 11px;background:var(--acc
 hr{border:none;border-top:1px solid var(--line2);margin:16px 0}
 @media (max-width:760px){
   .grid2{grid-template-columns:1fr}
+  .stepper .s{font-size:0}
+  .stepper .s .no{font-size:11px;margin:0}
+  .stepper .s.cur{font-size:12px}
+  .stepper .s.cur .no{margin-right:5px}
+  .tgrid{grid-template-columns:1fr;gap:7px}
+  .tcard{padding:9px 11px}
+  .tcard .thead{margin:0}
+  .tcard .tds,.tcard .tstate{display:none}
+  .tchk{top:50%;margin-top:-11px}
+  .tphead{gap:12px}
+  .hide-sm{display:none}
   .awtable th:first-child,.awtable td:first-child{width:auto}
   .awtable{font-size:12px}
   th,td{padding:6px 5px}
@@ -193,6 +260,8 @@ api('/api/me').then(function(me){
 function render(){
   var hash = location.hash || '#/';
   var m;
+  if(hash!=='#/') firstList = false;
+  var f=el('foot'); if(f) f.remove();   // 응답 화면 하단 바가 다른 화면에 남지 않게
   if((m=hash.match(/^#\/survey\/(\d+)$/))) return viewFill(+m[1]);
   if((m=hash.match(/^#\/results\/(\d+)$/))) return viewResults(+m[1]);
   if((m=hash.match(/^#\/edit\/(\d+)$/)))    return viewEdit(+m[1]);
@@ -201,8 +270,15 @@ function render(){
 }
 
 /* ================================================================= 목록 */
+var firstList = true;   // Hub 에서 처음 들어왔을 때만 진행중 설문으로 바로 보낸다
 function viewList(){
   api('/api/surveys').then(function(d){
+    var open = d.surveys.filter(function(s){ return s.status==='open'; });
+    if(firstList && !ME.admin && open.length===1 && open[0].myState!=='submitted'){
+      firstList = false;
+      return go('#/survey/'+open[0].id);
+    }
+    firstList = false;
     var rows = d.surveys.map(function(s){
       var my = {none:'<span class="pill none">미응답</span>',
                 draft:'<span class="pill part">작성중</span>',
@@ -244,101 +320,268 @@ function newSurvey(){
     go('#/edit/'+r.id); }).catch(function(e){ toast(e.message); });
 }
 
-/* ============================================================== 응답 화면 */
+/* ======================================================= 응답 화면 (단계별)
+   구글 폼처럼 한 화면에 한 단계씩 진행한다.
+     1) 툴 선택   : Hub 카드 모양 그대로, 써본 툴을 눌러서 고른다
+     2) 써본 툴   : 고른 툴마다 한 화면씩 평가 (사용 빈도 + usedQuestions)
+     3) 안 써본 툴: 나머지 툴을 한 화면에 모아 짧게 (unusedQuestions)
+     4) 공통 문항 : commonQuestions
+   서버에 저장하는 answers 형식(awareness/tools/common)은 그대로이고,
+   카드 선택 목록만 answers.picked 에 함께 저장해 다시 열어도 유지되게 한다. */
+var USED_FREQ = [{value:'often', label:'자주 쓴다'}, {value:'tried', label:'몇 번 써봤다'}];
+var UNKNOWN_OPT = '이런 툴이 있는지 몰랐다';   // 안 써본 이유에서 이걸 고르면 '처음 들어본다'로 집계
+
 function viewFill(sid){
   api('/api/surveys/'+sid).then(function(d){
     AW = d.awarenessOptions;
-    state = {sid:sid, s:d.survey, a:(d.myResponse&&d.myResponse.answers)||
-             {awareness:{},tools:{},common:{}}, submitted:!!(d.myResponse&&d.myResponse.submitted),
-             readonly:d.survey.status!=='open', missing:{}};
-    state.a.awareness = state.a.awareness||{};
-    state.a.tools = state.a.tools||{};
-    state.a.common = state.a.common||{};
+    var a = (d.myResponse&&d.myResponse.answers)||{};
+    a.awareness = a.awareness||{};
+    a.tools = a.tools||{};
+    a.common = a.common||{};
+    var tools = d.survey.schema.tools||[];
+    if(!Array.isArray(a.picked))
+      a.picked = tools.filter(function(t){ return usedVal(a.awareness[t.id]); })
+                      .map(function(t){ return t.id; });
+    state = {sid:sid, s:d.survey, a:a, submitted:!!(d.myResponse&&d.myResponse.submitted),
+             readonly:d.survey.status!=='open', missing:{}, step:0, done:false};
     drawFill();
   }).catch(err);
 }
 
 function usedVal(v){ for(var i=0;i<AW.length;i++) if(AW[i].value===v) return AW[i].used; return false; }
+function isPicked(tid){ return state.a.picked.indexOf(tid)>=0; }
+function pickedTools(){ return (state.s.schema.tools||[]).filter(function(t){ return isPicked(t.id); }); }
+function unpickedTools(){ return (state.s.schema.tools||[]).filter(function(t){ return !isPicked(t.id); }); }
+function isEmpty(v){ return v===undefined || v===null || v==='' || (Array.isArray(v)&&!v.length); }
+
+/* 조건부 문항: q.when = {q:'help', in:[...]} 이면 그 답일 때만 보인다 */
+function visibleQs(qs, bag){
+  return (qs||[]).filter(function(q){
+    if(!q.when) return true;
+    var v = bag[q.when.q];
+    return !isEmpty(v) && (q.when['in']||[]).indexOf(v)>=0;
+  });
+}
+function mustAnswer(q){ return q.required || (q.when && q.requireShown); }
+
+function steps(){
+  var sc = state.s.schema, list = [{k:'pick', stage:0}];
+  var used = pickedTools();
+  used.forEach(function(t, i){ list.push({k:'tool', t:t, i:i+1, n:used.length, stage:1}); });
+  if(unpickedTools().length && (sc.unusedQuestions||[]).length) list.push({k:'unused', stage:2});
+  if((sc.commonQuestions||[]).length) list.push({k:'common', stage:3});
+  return list;
+}
+
+/* 안 써본 툴의 인지도 값은 '안 써본 이유' 답으로 정한다 (별도 질문 없이) */
+function syncUnusedAw(tid){
+  var why = (state.a.tools[tid]||{}).why || [];
+  state.a.awareness[tid] = why.indexOf(UNKNOWN_OPT)>=0 ? 'unknown' : 'heard';
+}
+function ensureAwareness(){
+  unpickedTools().forEach(function(t){ syncUnusedAw(t.id); });
+  pickedTools().forEach(function(t){
+    if(!usedVal(state.a.awareness[t.id])) delete state.a.awareness[t.id]; });
+}
+
+/* ---------------------------------------------------------- 아이콘 */
+var ICON_SVG = {
+  chart: '<svg viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="#1f2a3c"/>'+
+    '<path d="M14 46h36" stroke="#5c6b82" stroke-width="2.5" stroke-linecap="round"/>'+
+    '<polyline points="15,40 25,30 33,35 47,19" fill="none" stroke="#7cc4ff" stroke-width="4" '+
+    'stroke-linecap="round" stroke-linejoin="round"/><circle cx="47" cy="19" r="3.5" fill="#fff"/></svg>',
+  scan: '<svg viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="#dcecff"/>'+
+    '<path d="M18 12h20l9 9v31H18z" fill="#fff" stroke="#3f7fd1" stroke-width="2.5" stroke-linejoin="round"/>'+
+    '<path d="M23 25h16M23 31h16M23 37h10" stroke="#9cbde8" stroke-width="2.5" stroke-linecap="round"/>'+
+    '<circle cx="40" cy="41" r="8" fill="#e9f4ff" stroke="#1f5fb0" stroke-width="3"/>'+
+    '<path d="M46 47l7 7" stroke="#1f5fb0" stroke-width="4" stroke-linecap="round"/></svg>',
+  dle: '<svg viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="#0f2240"/>'+
+    '<text x="32" y="33" text-anchor="middle" font-family="Arial,sans-serif" font-size="19" '+
+    'font-weight="800" fill="#fff">DL</text><text x="32" y="47" text-anchor="middle" '+
+    'font-family="Arial,sans-serif" font-size="10" font-weight="700" fill="#9fb4d4">E&amp;C</text></svg>',
+  /* Weekly Report Automater : 아웃룩 일정 → Weekly Report (순환 화살표 + 일정표 + 시트 + 파이썬) */
+  wra: '<svg viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="#123a66"/>'+
+    '<rect x="2" y="2" width="60" height="60" rx="11" fill="none" stroke="#2f6fb0" stroke-width="1.5"/>'+
+    '<path d="M12 31a20 20 0 0 1 33-14" fill="none" stroke="#3ea0ff" stroke-width="4.5" stroke-linecap="round"/>'+
+    '<path d="M42 10l9 6-10 4z" fill="#3ea0ff"/>'+
+    '<path d="M52 33a20 20 0 0 1-33 14" fill="none" stroke="#2fca86" stroke-width="4.5" stroke-linecap="round"/>'+
+    '<path d="M22 54l-9-6 10-4z" fill="#2fca86"/>'+
+    '<rect x="15" y="21" width="19" height="18" rx="3" fill="#2b7de0" stroke="#cfe6ff" stroke-width="1.3"/>'+
+    '<rect x="15" y="21" width="19" height="5" rx="2.5" fill="#1b5bb0"/>'+
+    '<text x="24.5" y="35.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="8" '+
+    'font-weight="800" fill="#fff">[P]</text>'+
+    '<rect x="31" y="27" width="16" height="18" rx="2.5" fill="#1d9d68" stroke="#d2f5e4" stroke-width="1.3"/>'+
+    '<text x="39" y="40.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" '+
+    'font-weight="800" fill="#fff">&#931;</text>'+
+    '<circle cx="48" cy="48" r="6" fill="#ffd43b"/><circle cx="46.3" cy="46.3" r="3.3" fill="#3776ab"/>'+
+    '</svg>'
+};
+var ICON_COLORS = ['#3b7dd8','#7b6fd6','#d6577a','#1f9a5b','#e0675f','#e07b2c','#1f8f86','#5a6b85'];
+function abbrOf(name){
+  var w = String(name||'?').replace(/[^\w가-힣 ]/g,' ').split(/\s+/).filter(Boolean);
+  return (w.length>1 ? w[0].charAt(0)+w[1].charAt(0) : (w[0]||'?').slice(0,2)).toUpperCase();
+}
+function colorOf(t){
+  if(/^#[0-9a-f]{3,8}$/i.test(t.color||'')) return t.color;
+  var n=0; String(t.id).split('').forEach(function(c){ n+=c.charCodeAt(0); });
+  return ICON_COLORS[n % ICON_COLORS.length];
+}
+function iconHtml(t, cls){
+  var svg = t.icon && ICON_SVG[t.icon];
+  return '<span class="ticon '+(cls||'')+'"'+(svg?'':' style="background:'+colorOf(t)+'"')+'>'+
+    (svg || h(t.abbr||abbrOf(t.name)))+
+    (t.kind?'<i class="kind">'+h(t.kind)+'</i>':'')+'</span>';
+}
+
+/* ---------------------------------------------------------- 그리기 */
+var STAGES = ['써본 툴 선택', '써본 툴 평가', '안 써본 툴', 'Hub 전반'];
 
 function drawFill(){
-  var s=state.s, sc=s.schema, a=state.a, ro=state.readonly;
-  var html = '<div class="card"><h1>'+h(s.title)+'</h1><p class="lead">'+h(s.intro)+'</p>'+
-    '<div class="muted">응답자: <b>'+h(ME.display)+'</b>'+
-    (s.anonymous?' · 결과는 <b>익명</b>으로 집계됩니다.':' · 결과에 이름이 함께 표시됩니다.')+
-    '</div></div>';
+  if(state.done) return drawDone();
+  var st = steps();
+  if(state.step >= st.length) state.step = st.length-1;
+  var cur = st[state.step], s = state.s, ro = state.readonly;
 
-  if(ro) html += '<div class="card"><div class="note">이 설문은 '+
+  var html = '<div class="card fhead">';
+  if(cur.k==='pick'){
+    html += '<h1>'+h(s.title)+'</h1><p class="lead">'+h(s.intro)+'</p>'+
+      '<div class="muted">응답자: <b>'+h(ME.display)+'</b>'+
+      (s.anonymous?' · 결과는 <b>익명</b>으로 집계됩니다.':' · 결과에 이름이 함께 표시됩니다.')+'</div>';
+  } else {
+    html += '<div class="muted">'+h(s.title)+'</div>';
+  }
+  html += '<div class="stepper">'+STAGES.map(function(lb, i){
+      var c = i<cur.stage ? 'done' : i===cur.stage ? 'cur' : '';
+      var extra = (i===1 && cur.k==='tool') ? ' '+cur.i+'/'+cur.n : '';
+      return '<div class="s '+c+'"><span class="no">'+(i+1)+'</span>'+h(lb)+extra+'</div>';
+    }).join('')+'</div></div>';
+
+  if(ro) html += '<div class="note">이 설문은 '+
     (s.status==='closed'?'종료되었습니다':'아직 공개되지 않았습니다')+
-    '. 내용만 확인할 수 있고 수정은 되지 않습니다.</div></div>';
-  else if(state.submitted) html += '<div class="card"><div class="note ok">이미 제출하셨습니다. '+
-    '내용을 고치고 다시 제출하면 덮어씁니다.</div></div>';
+    '. 내용만 확인할 수 있고 수정은 되지 않습니다.</div>';
+  else if(state.submitted && cur.k==='pick') html += '<div class="note ok">이미 제출하셨습니다. '+
+    '내용을 고치고 다시 제출하면 덮어씁니다.</div>';
 
-  /* --- Q1 인지도 --- */
-  html += '<div class="card"><h2>1. '+h(sc.awarenessLabel||'어떤 툴에 대해 알고 계신가요?')+'</h2>'+
-    '<div class="qhelp">'+h(sc.awarenessHelp||'')+'</div>'+
-    '<table class="awtable"><thead><tr><th>툴</th>'+
-    AW.map(function(o){ return '<th class="ch">'+h(o.label)+'</th>'; }).join('')+
-    '</tr></thead><tbody>';
-  (sc.tools||[]).forEach(function(t){
-    var bad = state.missing['awareness:'+t.id];
-    html += '<tr'+(bad?' class="miss"':'')+'><td>'+
-      '<div class="tname">'+h(t.name)+'</div>'+
-      (t.desc?'<div class="tdesc">'+h(t.desc)+'</div>':'')+'</td>'+
-      AW.map(function(o){
-        return '<td class="ch"><input type="radio" name="aw_'+h(t.id)+'" value="'+h(o.value)+'"'+
-          (a.awareness[t.id]===o.value?' checked':'')+(ro?' disabled':'')+
-          ' onchange="setAw(\''+h(t.id)+'\',\''+h(o.value)+'\')"></td>';
-      }).join('')+'</tr>';
-  });
-  html += '</tbody></table></div>';
+  if(cur.k==='pick') html += drawPick();
+  else if(cur.k==='tool') html += drawToolStep(cur);
+  else if(cur.k==='unused') html += drawUnused();
+  else html += drawCommon();
 
-  /* --- Q2 툴별 --- */
-  html += '<div class="card"><h2>2. 각 툴에 대해 어떻게 생각하시나요?</h2>'+
-    '<div class="qhelp">써본 툴을 먼저 묻고, 안 써본 툴은 뒤에 간단히 묻습니다. '+
-    '아직 1번을 고르지 않은 툴은 나타나지 않습니다.</div>';
-  /* 써본 툴을 먼저, 안 써본 툴은 뒤로 (각 그룹 안에서는 툴 목록 순서 유지) */
-  var picked = (sc.tools||[]).filter(function(t){ return a.awareness[t.id]; });
-  var usedTools = picked.filter(function(t){ return usedVal(a.awareness[t.id]); });
-  var unusedTools = picked.filter(function(t){ return !usedVal(a.awareness[t.id]); });
-  var shown = 0;
-  function toolBlock(t){
-    var aw = a.awareness[t.id];
-    shown++;
-    var used = usedVal(aw);
-    var qs = used ? (sc.usedQuestions||[]) : (sc.unusedQuestions||[]);
-    var awLabel = '';
-    AW.forEach(function(o){ if(o.value===aw) awLabel=o.label; });
-    a.tools[t.id] = a.tools[t.id]||{};
-    html += '<div class="qblock tool"><div class="toolhead"><span class="n">2-'+shown+'. '+
-      h(t.name)+'</span><span class="pill '+(used?'open':'draft')+'">'+h(awLabel)+'</span></div>';
-    if(!used) html += '<div class="unused-note">써보지 않으셨다고 하셨으니 간단히 두 가지만 묻습니다.</div>';
-    qs.forEach(function(q, qi){
-      html += field(q, a.tools[t.id][q.id], 'tool:'+t.id+':'+q.id,
-                    '2-'+shown+'-'+(qi+1), ro);
-    });
-    html += '</div>';
-  }
-  if(usedTools.length){
-    html += '<h3 class="grp">▶ 사용해 본 툴 ('+usedTools.length+'개) — 업무 생산성 평가</h3>';
-    usedTools.forEach(toolBlock);
-  }
-  if(unusedTools.length){
-    html += '<h3 class="grp">▶ 사용해 보지 않은 툴 ('+unusedTools.length+'개) — 간단 문항</h3>';
-    unusedTools.forEach(toolBlock);
-  }
-  if(!shown) html += '<p class="muted">1번 문항을 먼저 선택해 주세요.</p>';
-  html += '</div>';
-
-  /* --- Q3 공통 --- */
-  if((sc.commonQuestions||[]).length){
-    html += '<div class="card"><h2>3. Hub 전반에 대해</h2>';
-    (sc.commonQuestions||[]).forEach(function(q, i){
-      html += field(q, a.common[q.id], 'common:'+q.id, '3-'+(i+1), ro, sc.tools);
-    });
-    html += '</div>';
-  }
   el('app').innerHTML = html;
   drawFoot();
+}
+
+function drawPick(){
+  var sc=state.s.schema, ro=state.readonly, tools=sc.tools||[];
+  var cats=[], by={};
+  tools.forEach(function(t){
+    var c = t.cat||'기타';
+    if(!by[c]){ by[c]=[]; cats.push(c); }
+    by[c].push(t);
+  });
+  var html = '<div class="card"><h2>'+h(sc.awarenessLabel||'사용해 본 툴을 모두 선택해 주세요')+'</h2>'+
+    '<div class="qhelp">'+h(sc.awarenessHelp||'')+'</div>'+
+    '<div class="pickbar"><span>선택한 툴 <b id="pickN">'+state.a.picked.length+'</b>개'+
+    ' <span class="muted">/ 전체 '+tools.length+'개</span></span></div>';
+  cats.forEach(function(c){
+    html += '<div class="catttl">'+h(c)+'</div><div class="tgrid">'+
+      by[c].map(function(t){
+        var on = isPicked(t.id);
+        return '<div class="tcard'+(on?' on':'')+(ro?' ro':'')+'" role="checkbox" tabindex="0"'+
+          ' aria-checked="'+on+'" data-tid="'+h(t.id)+'"'+
+          (ro?'':' onclick="togglePick(this)" onkeydown="if(event.key===\' \'||event.key===\'Enter\'){event.preventDefault();togglePick(this);}"')+'>'+
+          '<span class="tchk">&#10003;</span>'+
+          '<div class="thead">'+iconHtml(t)+'<div><div class="tnm">'+h(t.name)+'</div>'+
+          '<div class="tcat">'+h(c)+'</div></div></div>'+
+          (t.desc?'<div class="tds">'+h(t.desc)+'</div>':'')+
+          '<div class="tstate">'+(on?'&#10003; 사용해 봤어요':'눌러서 선택')+'</div></div>';
+      }).join('')+'</div>';
+  });
+  return html+'</div>';
+}
+
+function togglePick(node){
+  var tid = node.getAttribute('data-tid'), p = state.a.picked, i = p.indexOf(tid);
+  if(i>=0){ p.splice(i,1); syncUnusedAw(tid); }
+  else { p.push(tid); if(!usedVal(state.a.awareness[tid])) delete state.a.awareness[tid]; }
+  var on = i<0;
+  node.classList.toggle('on', on);
+  node.setAttribute('aria-checked', on);
+  node.querySelector('.tstate').innerHTML = on ? '&#10003; 사용해 봤어요' : '눌러서 선택';
+  el('pickN').textContent = p.length;
+  queueSave();
+  drawFoot();
+}
+
+function drawToolStep(cur){
+  var t=cur.t, sc=state.s.schema, ro=state.readonly, a=state.a;
+  var bag = a.tools[t.id] = a.tools[t.id]||{};
+  var aw = a.awareness[t.id], key='awareness:'+t.id;
+  var html = '<div class="card tphead">'+iconHtml(t,'lg')+'<div>'+
+    '<div class="muted">써본 툴 평가 · '+cur.i+' / '+cur.n+'</div>'+
+    '<div class="tpname">'+h(t.name)+'</div>'+
+    (t.desc?'<div class="tds full">'+h(t.desc)+'</div>':'')+'</div></div>';
+  html += '<div class="card">';
+  html += '<div class="qblock'+(state.missing[key]?' miss':'')+'" id="q_'+h(key.replace(/[^\w]/g,'_'))+'">'+
+    '<div class="qtitle">이 툴을 얼마나 사용하시나요?<span class="req">*</span></div>'+
+    '<div class="opts inline">'+USED_FREQ.map(function(o){
+      var on = aw===o.value;
+      return '<label class="opt'+(on?' on':'')+'"><input type="radio" name="'+h(key)+'"'+
+        (on?' checked':'')+(ro?' disabled':'')+' onchange="setFreq(\''+h(t.id)+'\',\''+o.value+'\')">'+
+        '<span>'+h(o.label)+'</span></label>';
+    }).join('')+'</div></div>';
+  visibleQs(sc.usedQuestions, bag).forEach(function(q, qi){
+    html += field(q, bag[q.id], 'tool:'+t.id+':'+q.id, 'Q'+(qi+1), ro);
+  });
+  return html+'</div>';
+}
+
+function setFreq(tid, v){
+  state.a.awareness[tid] = v;
+  delete state.missing['awareness:'+tid];
+  var b = el('q_awareness_'+tid.replace(/[^\w]/g,'_'));
+  if(b){ b.classList.remove('miss');
+    Array.prototype.forEach.call(b.querySelectorAll('.opt'), function(l){
+      l.classList.toggle('on', l.querySelector('input').checked); }); }
+  queueSave();
+}
+
+function drawUnused(){
+  var sc=state.s.schema, ro=state.readonly, a=state.a, list=unpickedTools();
+  var html = '<div class="card"><h2>사용해 보지 않은 툴 ('+list.length+'개)</h2>'+
+    '<div class="qhelp">툴마다 두 가지만 짧게 여쭙니다. 해당되는 것만 골라주시면 됩니다.</div>';
+  list.forEach(function(t){
+    var bag = a.tools[t.id] = a.tools[t.id]||{};
+    html += '<div class="ucard"><div class="uhead">'+iconHtml(t,'sm')+
+      '<div><div class="tnm">'+h(t.name)+'</div>'+
+      (t.desc?'<div class="tds one">'+h(t.desc)+'</div>':'')+'</div></div>';
+    visibleQs(sc.unusedQuestions, bag).forEach(function(q, qi){
+      html += field(q, bag[q.id], 'tool:'+t.id+':'+q.id, 'Q'+(qi+1), ro, null, true);
+    });
+    html += '</div>';
+  });
+  return html+'</div>';
+}
+
+function drawCommon(){
+  var sc=state.s.schema, ro=state.readonly;
+  var html = '<div class="card"><h2>마지막으로, Hub 전반에 대해 여쭙니다</h2>';
+  (sc.commonQuestions||[]).forEach(function(q, i){
+    html += field(q, state.a.common[q.id], 'common:'+q.id, 'Q'+(i+1), ro, sc.tools);
+  });
+  return html+'</div>';
+}
+
+function drawDone(){
+  var n = pickedTools().length;
+  el('app').innerHTML = '<div class="card donecard"><div class="big">&#10003;</div>'+
+    '<h1>제출되었습니다. 감사합니다!</h1>'+
+    '<p class="lead">써본 툴 '+n+'개에 대한 평가와 의견이 잘 저장되었습니다.\n'+
+    '설문이 진행 중인 동안에는 언제든 다시 들어와 고칠 수 있습니다.</p>'+
+    '<div class="row" style="justify-content:center;margin-top:14px">'+
+    '<button onclick="state.done=false;state.step=0;drawFill();scrollTo(0,0)">응답 수정하기</button>'+
+    '<button class="primary" onclick="go(\'#/\')">목록으로</button></div></div>';
+  var f=el('foot'); if(f) f.remove();
 }
 
 function inlineOk(opts){
@@ -348,18 +591,19 @@ function inlineOk(opts){
   return true;
 }
 
-function field(q, val, key, num, ro, tools){
+function field(q, val, key, num, ro, tools, chips){
   var bad = state.missing[key];
-  var h2 = '<div class="qblock'+(bad?' miss':'')+'" id="q_'+
+  var h2 = '<div class="qblock'+(bad?' miss':'')+(chips?' compact':'')+'" id="q_'+
     h(key.replace(/[^\w]/g,'_'))+'">'+
-    '<div class="qtitle">'+h(num)+'. '+h(q.label)+
-    (q.required?'<span class="req">*</span>':'')+'</div>';
+    '<div class="qtitle"><span class="qno">'+h(num)+'</span>'+h(q.label)+
+    (mustAnswer(q)?'<span class="req">*</span>':'')+'</div>';
   if(q.help) h2 += '<div class="qhelp">'+h(q.help)+'</div>';
   var dis = ro?' disabled':'';
   if(q.type==='single' || q.type==='multi'){
     var multi = q.type==='multi';
     var cur = multi ? (val||[]) : val;
-    h2 += '<div class="opts'+(inlineOk(q.options)?' inline':'')+'">'+
+    // 복수 선택은 칩 모양으로 흘려 배치해 세로로 길어지지 않게 한다
+    h2 += '<div class="opts'+((chips||multi||inlineOk(q.options))?' inline':'')+'">'+
       (q.options||[]).map(function(o){
         var on = multi ? cur.indexOf(o)>=0 : cur===o;
         return '<label class="opt'+(on?' on':'')+'"><input type="'+(multi?'checkbox':'radio')+
@@ -368,7 +612,7 @@ function field(q, val, key, num, ro, tools){
           ',\''+h(o).replace(/'/g,"\\'")+'\')"><span>'+h(o)+'</span></label>';
       }).join('')+'</div>';
   } else if(q.type==='toolpick'){
-    h2 += '<div class="opts">'+(tools||[]).map(function(t){
+    h2 += '<div class="opts inline">'+(tools||[]).map(function(t){
       return '<label class="opt'+(val===t.id?' on':'')+'"><input type="radio" name="'+h(key)+
         '" '+(val===t.id?'checked ':'')+dis+' onchange="setVal(\''+h(key)+
         '\',this,false,\''+h(t.id)+'\')"><span>'+h(t.name)+'</span></label>';
@@ -380,12 +624,6 @@ function field(q, val, key, num, ro, tools){
   return h2+'</div>';
 }
 
-function setAw(tid, v){
-  state.a.awareness[tid]=v;
-  delete state.missing['awareness:'+tid];
-  drawFill();
-  save(false, true);
-}
 function setVal(key, node, multi, optval){
   var p = key.split(':');
   var bag = p[0]==='common' ? state.a.common : (state.a.tools[p[1]] = state.a.tools[p[1]]||{});
@@ -398,48 +636,119 @@ function setVal(key, node, multi, optval){
   } else if(optval!==null){ bag[id]=optval; }
   else { bag[id]=node.value; }
   delete state.missing[key];
+  if(p[0]==='tool' && id==='why' && !isPicked(p[1])) syncUnusedAw(p[1]);
+  // 이 답에 따라 보였다 숨었다 하는 문항이 있으면 화면을 다시 그린다
+  var qs = p[0]==='common' ? state.s.schema.commonQuestions
+         : isPicked(p[1]) ? state.s.schema.usedQuestions : state.s.schema.unusedQuestions;
+  var dep = (qs||[]).filter(function(q){ return q.when && q.when.q===id; });
+  if(dep.length){
+    var vis = visibleQs(dep, bag);
+    dep.forEach(function(q){ if(vis.indexOf(q)<0) delete bag[q.id]; });
+    queueSave();
+    return drawFill();
+  }
   // 라디오/체크박스는 선택 표시를 즉시 반영한다 (서술형은 커서를 잃지 않도록 두고 본다)
   if(optval!==null){
     var box = node.closest('.opts');
     if(box) Array.prototype.forEach.call(box.querySelectorAll('.opt'), function(l){
       l.classList.toggle('on', l.querySelector('input').checked); });
+    var qb = node.closest('.qblock'); if(qb) qb.classList.remove('miss');
   }
+  queueSave();
+}
+function queueSave(){
+  if(state.readonly) return;
   clearTimeout(setVal._t);
   setVal._t = setTimeout(function(){ save(false, true); }, 1200);
-  drawFoot();
 }
 
-function answered(){
-  var sc=state.s.schema, a=state.a, need=0, got=0;
+/* ---------------------------------------------------------- 단계 이동 */
+function stepMissing(stp){
+  var sc=state.s.schema, a=state.a, miss=[];
+  function chk(qs, bag, pre){
+    visibleQs(qs, bag).forEach(function(q){
+      if(mustAnswer(q) && isEmpty(bag[q.id])) miss.push(pre+q.id); });
+  }
+  if(stp.k==='tool'){
+    if(!usedVal(a.awareness[stp.t.id])) miss.push('awareness:'+stp.t.id);
+    chk(sc.usedQuestions, a.tools[stp.t.id]||{}, 'tool:'+stp.t.id+':');
+  } else if(stp.k==='unused'){
+    unpickedTools().forEach(function(t){ chk(sc.unusedQuestions, a.tools[t.id]||{}, 'tool:'+t.id+':'); });
+  } else if(stp.k==='common'){
+    chk(sc.commonQuestions, a.common, 'common:');
+  }
+  return miss;
+}
+function showMissing(miss){
+  state.missing={}; miss.forEach(function(k){ state.missing[k]=true; });
+  drawFill();
+  toast('빨간색으로 표시된 필수 문항을 채워주세요. ('+miss.length+'개)');
+  var first=document.querySelector('.miss');
+  if(first) first.scrollIntoView({behavior:'smooth',block:'center'});
+}
+function stepOfKey(k){
+  var p=k.split(':'), st=steps();
+  for(var i=0;i<st.length;i++){
+    if(p[0]==='common' && st[i].k==='common') return i;
+    if(p[0]!=='common' && st[i].k==='tool' && st[i].t.id===p[1]) return i;
+    if(p[0]==='tool' && st[i].k==='unused' && !isPicked(p[1])) return i;
+  }
+  return 0;
+}
+function goStep(i){
+  state.step=i; state.missing={};
+  drawFill(); scrollTo(0,0);
+}
+function nextStep(){
+  var st=steps(), cur=st[state.step];
+  if(!state.readonly){
+    var miss=stepMissing(cur);
+    if(miss.length) return showMissing(miss);
+    if(cur.k==='pick'){
+      if(!state.a.picked.length &&
+         !confirm('사용해 본 툴을 하나도 선택하지 않으셨습니다.\n이대로 다음으로 넘어갈까요?')) return;
+      ensureAwareness();
+    }
+    clearTimeout(setVal._t); save(false, true);
+  }
+  goStep(Math.min(state.step+1, st.length-1));
+}
+function prevStep(){ if(state.step>0) goStep(state.step-1); }
+
+function submitAll(){
+  ensureAwareness();
+  var st=steps();
+  for(var i=0;i<st.length;i++){
+    var miss=stepMissing(st[i]);
+    if(miss.length){ state.step=i; return showMissing(miss); }
+  }
+  // 써본/안 써본 그룹이 바뀐 툴은 반대쪽 그룹의 답을 지워 CSV 에 섞이지 않게 한다
+  var sc=state.s.schema;
   (sc.tools||[]).forEach(function(t){
-    need++; if(a.awareness[t.id]) got++;
-    if(!a.awareness[t.id]) return;
-    var qs = usedVal(a.awareness[t.id]) ? (sc.usedQuestions||[]) : (sc.unusedQuestions||[]);
-    qs.forEach(function(q){
-      need++;
-      var v=(a.tools[t.id]||{})[q.id];
-      if(v!==undefined && v!=='' && !(Array.isArray(v)&&!v.length)) got++;
-    });
+    var bag=state.a.tools[t.id]; if(!bag) return;
+    var keep=(isPicked(t.id)?sc.usedQuestions:sc.unusedQuestions)||[];
+    var ids=keep.map(function(q){ return q.id; });
+    Object.keys(bag).forEach(function(k){ if(ids.indexOf(k)<0) delete bag[k]; });
   });
-  (sc.commonQuestions||[]).forEach(function(q){
-    need++; var v=a.common[q.id];
-    if(v!==undefined && v!=='' && !(Array.isArray(v)&&!v.length)) got++;
-  });
-  return {need:need, got:got};
+  save(true);
 }
 
 function drawFoot(){
   var old=el('foot'); if(old) old.remove();
-  if(state.readonly) return;
-  var p=answered();
+  if(state.done) return;
+  var st=steps(), i=state.step, last=i>=st.length-1, ro=state.readonly;
   var d=document.createElement('div');
   d.className='sticky-foot'; d.id='foot';
-  d.innerHTML='<div class="in"><div class="prog"><div class="t">작성 '+p.got+' / '+p.need+
-    ' 문항<span id="savedAt" class="muted"></span></div><div class="g"><i style="width:'+
-    pct(p.got,p.need)+'%"></i></div></div>'+
-    '<button onclick="save(false)">임시저장</button>'+
-    '<button class="primary" onclick="save(true)">'+
-    (state.submitted?'수정 제출':'제출하기')+'</button></div>';
+  d.innerHTML='<div class="in">'+
+    '<button onclick="prevStep()"'+(i===0?' disabled':'')+'>&larr; 이전</button>'+
+    '<div class="prog"><div class="t">'+(i+1)+' / '+st.length+' 단계'+
+    '<span id="savedAt" class="muted"></span></div><div class="g"><i style="width:'+
+    pct(i+1,st.length)+'%"></i></div></div>'+
+    (ro?'':'<button class="hide-sm" onclick="save(false)">임시저장</button>')+
+    (last ? (ro?'':'<button class="primary" onclick="submitAll()">'+
+              (state.submitted?'수정 제출':'제출하기')+'</button>')
+          : '<button class="primary" onclick="nextStep()">다음 &rarr;</button>')+
+    '</div>';
   document.body.appendChild(d);
 }
 
@@ -448,19 +757,15 @@ function save(submit, quiet){
   return api('/api/surveys/'+state.sid+'/response',
              {method:'POST', body:{answers:state.a, submitted:!!submit}})
   .then(function(){
-    state.missing={};
-    if(submit){ state.submitted=true; toast('제출되었습니다. 감사합니다!');
-      setTimeout(function(){ go('#/'); }, 900); }
+    if(submit){ state.submitted=true; state.done=true; state.missing={};
+      drawFill(); scrollTo(0,0); }
     else if(!quiet) toast('임시저장했습니다.');
     else { var s=el('savedAt'); if(s) s.textContent=' · 자동저장 '+fmt(Date.now()/1000); }
   })
   .catch(function(e){
-    if(e.data && e.data.missing){
-      state.missing={}; e.data.missing.forEach(function(k){ state.missing[k]=true; });
-      drawFill();
-      toast('빨간색으로 표시된 필수 문항을 채워주세요. ('+e.data.missing.length+'개)');
-      var first=document.querySelector('.miss');
-      if(first) first.scrollIntoView({behavior:'smooth',block:'center'});
+    if(e.data && e.data.missing && e.data.missing.length){
+      state.step = stepOfKey(e.data.missing[0]);
+      showMissing(e.data.missing);
     } else if(!quiet) toast(e.message);
   });
 }
@@ -685,9 +990,11 @@ function drawEdit(){
       h(sc.awarenessLabel||'')+'"></div>'+
     '<div class="f"><label>안내 문구</label><input type="text" id="e_awh" value="'+
       h(sc.awarenessHelp||'')+'"></div><hr>'+
-    '<table><thead><tr><th>표시 이름</th><th>설명 (선택)</th><th></th></tr></thead><tbody>'+
+    '<table><thead><tr><th>분류</th><th>표시 이름</th><th>설명 (선택)</th><th></th></tr></thead><tbody>'+
     (sc.tools||[]).map(function(t,i){
-      return '<tr><td><input type="text" value="'+h(t.name)+
+      return '<tr><td style="width:130px"><input type="text" value="'+h(t.cat||'')+
+        '" placeholder="예) Auto Tools" oninput="editTool('+i+',\'cat\',this.value)"></td>'+
+        '<td><input type="text" value="'+h(t.name)+
         '" oninput="editTool('+i+',\'name\',this.value)"></td>'+
         '<td><input type="text" value="'+h(t.desc||'')+
         '" oninput="editTool('+i+',\'desc\',this.value)"></td>'+
