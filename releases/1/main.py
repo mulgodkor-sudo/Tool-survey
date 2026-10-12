@@ -96,10 +96,16 @@ SCALE_HELP = ["업무에 매우 도움이 된다", "도움이 된다", "보통�
               "별로 도움이 안 된다", "전혀 도움이 안 된다"]
 
 DEFAULT_USED_QUESTIONS = [
+    {"id": "prod", "type": "single",
+     "label": "이 툴을 쓰면서 일주일(Week)에 업무 시간이 얼마나 줄었나요? (생산성 향상)",
+     "options": ["도움 안 됨", "약 10분", "약 30분", "약 1시간", "약 2시간 이상"],
+     "required": True},
+    {"id": "prodwhy", "type": "multi", "label": "어떤 면에서 시간이 줄었나요? (여러 개 선택 가능)",
+     "options": ["반복 수작업 감소", "자료 검색·조회 시간 단축", "문서·보고서 작성 시간 단축",
+                 "오류·재작업 감소", "현황 파악·취합 시간 단축", "타 부서·협력사와 공유 용이",
+                 "효과를 느끼지 못했다"], "required": False},
     {"id": "ease", "type": "single", "label": "사용하기에 편한가요?",
-     "options": SCALE_EASE, "required": True},
-    {"id": "help", "type": "single", "label": "실제 업무에 도움이 되나요?",
-     "options": SCALE_HELP, "required": False},
+     "options": SCALE_EASE, "required": False},
     {"id": "pain", "type": "multi", "label": "불편한 점이 있다면 골라주세요 (여러 개 선택 가능)",
      "options": ["속도가 느리다", "화면이 복잡하다", "원하는 기능을 찾기 어렵다",
                  "결과가 부정확하거나 믿기 어렵다", "오류·멈춤이 잦다",
@@ -154,8 +160,8 @@ def default_schema():
     return {
         "tools": [dict(t) for t in DEFAULT_TOOLS],
         "awarenessLabel": "어떤 툴에 대해 알고 계신가요?",
-        "awarenessHelp": "툴마다 하나씩 골라주세요. 여기서 '써봤다'를 고른 툴만 "
-                         "아래에서 평가 문항이 나옵니다.",
+        "awarenessHelp": "툴마다 하나씩 골라주세요. 써본 툴(자주 쓴다/몇 번 써봤다)은 아래에서 먼저 "
+                         "생산성 평가 문항이 나오고, 안 써본 툴은 그 뒤에 간단히 묻습니다.",
         "usedQuestions": [dict(q) for q in DEFAULT_USED_QUESTIONS],
         "unusedQuestions": [dict(q) for q in DEFAULT_UNUSED_QUESTIONS],
         "commonQuestions": [dict(q) for q in DEFAULT_COMMON_QUESTIONS],
@@ -164,6 +170,7 @@ def default_schema():
 
 DEFAULT_INTRO = (
     "기계설계팀 공용 툴(Engineering Hub)에 대한 의견을 묻는 설문입니다.\n"
+    "특히 써본 툴이 업무 생산성(주당 절감 시간)에 얼마나 도움이 되었는지를 중심으로 묻고, "
     "앞으로 어떤 툴을 손보고 무엇을 새로 만들지 정하는 데 그대로 쓰입니다.\n"
     "모르는 툴은 '처음 들어본다'를 고르시면 됩니다. 5~10분 정도 걸립니다."
 )

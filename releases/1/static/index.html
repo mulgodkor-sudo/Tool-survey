@@ -82,6 +82,8 @@ tr.miss{background:var(--bad-soft)}
 .awtable td.ch{text-align:center;white-space:nowrap}
 .awtable .tname{font-weight:600}
 .awtable .tdesc{color:var(--ink3);font-size:12px;font-weight:400}
+h3.grp{font-size:14.5px;margin:18px 0 10px;padding:7px 11px;background:var(--accent-soft);
+  color:var(--accent);border-radius:7px}
 .toolhead{display:flex;align-items:center;gap:8px;margin-bottom:4px}
 .toolhead .n{font-weight:700;font-size:14.5px}
 .unused-note{background:#fafbfd;border:1px dashed var(--line);border-radius:7px;
@@ -292,12 +294,15 @@ function drawFill(){
 
   /* --- Q2 툴별 --- */
   html += '<div class="card"><h2>2. 각 툴에 대해 어떻게 생각하시나요?</h2>'+
-    '<div class="qhelp">위에서 고른 답에 따라 묻는 내용이 달라집니다. '+
+    '<div class="qhelp">써본 툴을 먼저 묻고, 안 써본 툴은 뒤에 간단히 묻습니다. '+
     '아직 1번을 고르지 않은 툴은 나타나지 않습니다.</div>';
+  /* 써본 툴을 먼저, 안 써본 툴은 뒤로 (각 그룹 안에서는 툴 목록 순서 유지) */
+  var picked = (sc.tools||[]).filter(function(t){ return a.awareness[t.id]; });
+  var usedTools = picked.filter(function(t){ return usedVal(a.awareness[t.id]); });
+  var unusedTools = picked.filter(function(t){ return !usedVal(a.awareness[t.id]); });
   var shown = 0;
-  (sc.tools||[]).forEach(function(t, i){
+  function toolBlock(t){
     var aw = a.awareness[t.id];
-    if(!aw) return;
     shown++;
     var used = usedVal(aw);
     var qs = used ? (sc.usedQuestions||[]) : (sc.unusedQuestions||[]);
@@ -312,7 +317,15 @@ function drawFill(){
                     '2-'+shown+'-'+(qi+1), ro);
     });
     html += '</div>';
-  });
+  }
+  if(usedTools.length){
+    html += '<h3 class="grp">▶ 사용해 본 툴 ('+usedTools.length+'개) — 업무 생산성 평가</h3>';
+    usedTools.forEach(toolBlock);
+  }
+  if(unusedTools.length){
+    html += '<h3 class="grp">▶ 사용해 보지 않은 툴 ('+unusedTools.length+'개) — 간단 문항</h3>';
+    unusedTools.forEach(toolBlock);
+  }
   if(!shown) html += '<p class="muted">1번 문항을 먼저 선택해 주세요.</p>';
   html += '</div>';
 
@@ -431,6 +444,7 @@ function drawFoot(){
 }
 
 function save(submit, quiet){
+  if(submit) clearTimeout(setVal._t);   // 마지막 입력 직후 제출해도 늦게 도는 자동저장이 '제출'을 덮어쓰지 않게
   return api('/api/surveys/'+state.sid+'/response',
              {method:'POST', body:{answers:state.a, submitted:!!submit}})
   .then(function(){
@@ -471,6 +485,29 @@ function countTable(obj, total){
   return '<table>'+keys.map(function(k){ return barRow(k, obj[k], total); }).join('')+'</table>';
 }
 
+/* 생산성 문항(id: prod)의 보기를 주당 분(分)으로 환산해 툴별 절감 시간을 추정한다.
+   "2시간 이상"은 하한값(120분)으로 계산하므로 합계는 최소 추정치다. */
+var PROD_MIN = {'도움 안 됨':0, '약 10분':10, '약 30분':30, '약 1시간':60, '약 2시간 이상':120};
+function prodTable(sc, agg){
+  var rows='';
+  (sc.tools||[]).forEach(function(t){
+    var c=((agg.tools[t.id]||{}).used||{}).prod; if(!c) return;
+    var n=0, min=0;
+    Object.keys(c).forEach(function(k){
+      if(PROD_MIN[k]===undefined) return; n+=c[k]; min+=c[k]*PROD_MIN[k]; });
+    if(!n) return;
+    rows += '<tr><td><b>'+h(t.name)+'</b></td><td class="cnt">'+n+'명</td>'+
+      '<td class="cnt">'+Math.round(min/n)+'분</td>'+
+      '<td class="cnt"><b>'+(Math.round(min/6)/10)+'시간</b></td></tr>';
+  });
+  if(!rows) return '';
+  return '<h3>툴별 생산성 향상 (주당, 추정)</h3><table><thead><tr><th>툴</th>'+
+    '<th class="cnt">응답</th><th class="cnt">1인 평균 절감</th>'+
+    '<th class="cnt">응답자 합계 절감</th></tr></thead><tbody>'+rows+'</tbody></table>'+
+    '<div class="muted" style="margin-top:6px">보기를 10분·30분·60분·120분으로 환산한 값입니다. '+
+    '"약 2시간 이상"은 120분으로 계산해 실제보다 작게 잡힐 수 있습니다.</div>';
+}
+
 function drawResults(){
   var d=state.d, s=d.survey, sc=s.schema, agg=d.agg, T=agg.total;
   var head='<div class="card"><div class="row"><div><h1 style="margin:0">'+h(s.title)+'</h1>'+
@@ -506,6 +543,7 @@ function drawResults(){
         '<td class="cnt"><b>'+pct(used,T)+'%</b></td></tr>';
     });
     body += '</tbody></table>';
+    body += prodTable(sc, agg);
     (sc.commonQuestions||[]).forEach(function(q){
       if(q.type==='textarea') return;
       body += '<h3>'+h(q.label)+'</h3>'+countTable(agg.common[q.id]||{}, T);
